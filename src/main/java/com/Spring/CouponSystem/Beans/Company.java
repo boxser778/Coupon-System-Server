@@ -5,10 +5,15 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -72,13 +77,19 @@ public class Company {
 		this.email = email;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Coupon> coupons;
+//	private List<Coupon> coupons;
+//
+//	public List<Coupon> getCoupons() {
+//		return coupons;
+//	}
+
 
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ",comp_name=" + comp_name + ", password=" + password + ", email=" + email
 				+ "] \n\"";
 	}
+
+	
 
 }

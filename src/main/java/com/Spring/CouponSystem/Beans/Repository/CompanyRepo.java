@@ -40,11 +40,17 @@ public interface CompanyRepo extends JpaRepository<Company, Long> {
 //	Set<Coupon> findCompanyCouponsByType(CouponType type, Company company);
 //	
 	@Query("select c from Coupon c where c.endDate = :endDate")
-	List<Coupon> findCompanyCouponsByDate(Date endDate);
+	List<Coupon> findCouponsByDate(Date endDate);
 
 //	@Query("Select c from Company c where c.comp_Name = :user AND c.password = :password")
 //	Company findCompanyByCompNameAndPassword(String user, String password);
 
 	@Query("select c from Company c where c.comp_Name = :name And c.password = :password")
 	Company findByCompanyNameAndPassword(String name, String password);
+
+	@Query("select c from Coupon c where c.price = :price")
+	List<Coupon> findCouponsByPrice(double price);
+
+	@Query("select c from Coupon c where c.type = :type")
+	List<Coupon> findCouponsByType(CouponType type);
 }

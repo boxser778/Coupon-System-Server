@@ -60,28 +60,28 @@ public class CouponSystem {
 				throw new Exception("Admin failed to connect");
 			}
 		case COMPANY:
-//			Company comp = companyRepo.findByCompanyNameAndPassword(name, password);
-//			if (comp != null) {
-//				CompanyService company = context.getBean(CompanyService.class);
-//				company.setCompany(comp);
-//				return  (CouponClient) company;
-			if (name.equals("company") && password.equals("1234")) {
-				companyService = context.getBean(CompanyService.class);
-				return companyService;
+			Company comp = companyRepo.findByCompanyNameAndPassword(name, password);
+			if (comp != null) {
+				CompanyService company = context.getBean(CompanyService.class);
+				company.setCompany(comp);
+				return  (CouponClient) company;
+//			if (name.equals("company") && password.equals("1234")) {
+//				companyService = context.getBean(CompanyService.class);
+//				return companyService;
 			} else {
 				throw new Exception("Company failed to connect");
 			}
 			
 		case CUSTOMER:
-//			Customer cust = customerRepo.findByCustomerNameAndPassword(name, password);
-//			if (cust != null) {
-//				CustomerService customer = context.getBean(CustomerService.class);
-//				customer.saveCustomer(cust);
-//				return (CouponClient) customer;
+			Customer cust = customerRepo.findByCustomerNameAndPassword(name, password);
+			if (cust != null) {
+				CustomerService customer = context.getBean(CustomerService.class);
+				customer.saveCustomer(cust);
+				return (CouponClient) customer;
 //			}
-			if (name.equals("customer") && password.equals("1234")) {
-				customerService = context.getBean(CustomerService.class);
-				return customerService;
+//			if (name.equals("customer") && password.equals("1234")) {
+//				customerService = context.getBean(CustomerService.class);
+//				return customerService;
 			} else {
 				throw new Exception("Customer failed to connect");
 			}

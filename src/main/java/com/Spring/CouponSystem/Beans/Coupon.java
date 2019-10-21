@@ -9,6 +9,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -82,8 +84,8 @@ public class Coupon {
 
 	@Column(nullable = false)
 //	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@JsonFormat(pattern="dd-MM-yyyy")
+//	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	@Basic(optional = false)
 	public Date getStartDate() {
 		return startDate;
@@ -94,8 +96,8 @@ public class Coupon {
 	}
 
 	@Column(nullable = false)
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@JsonFormat(pattern="dd-MM-yyyy")
+//	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	@Basic(optional = false)
 	public Date getEndDate() {
 		return endDate;
@@ -146,8 +148,7 @@ public class Coupon {
 		this.picture = picture;
 	}
 
-//	@Column(nullable = false)
-//	public Company getCompany() {
+//    public Company getCompany() {
 //		return company;
 //	}
 //
@@ -159,7 +160,7 @@ public class Coupon {
 	public String toString() {
 		return "Coupon [id=" + id + ", title=" + title + ", amount=" + amount + ", startDate=" + startDate
 				+ ", endDate=" + endDate + ", type=" + type + ", msg=" + msg + ", price=" + price + ", picture="
-				+ picture + ", company=" + "]";
+				+ picture + "]";
 	}
 
 
