@@ -130,6 +130,14 @@ public class CompanyService implements CouponClient {
 	public List<Coupon> findAllCoupons() {
 		return couponRepo.findAll();
 	}
+	
+	public Company updateCompany(Company company) {
+		Company currentCompany = companyRepo.findById(company.getId());
+//		currentCompany.setComp_Name(company.getComp_Name());
+		currentCompany.setEmail(company.getEmail());
+		currentCompany.setPassword(company.getPassword());
+		return companyRepo.saveAndFlush(currentCompany);
+	}
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -138,5 +146,7 @@ public class CompanyService implements CouponClient {
 
 		return new CompanyService();
 	}
+
+	
 
 }

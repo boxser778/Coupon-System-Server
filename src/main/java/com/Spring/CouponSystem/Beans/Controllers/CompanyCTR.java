@@ -47,13 +47,13 @@ public class CompanyCTR {
 	private Map<String, Session> tokens;
 
 	@PostMapping("/coupon")
-	public ResponseEntity<?> newCoupon(@RequestBody Coupon c, @RequestHeader(name = "Authorization") String token) {
+	public ResponseEntity<?> newCoupon(@RequestBody Coupon c) {
 		if (companyService.isCouponTitleExist(c.getTitle()) == false) {
 			return new ResponseEntity<String>("Coupon Title Exist", HttpStatus.BAD_REQUEST);
 		} else
 			return new ResponseEntity<Coupon>(companyService.createCoupon(c), HttpStatus.OK);
 	}
-
+	
 	@PutMapping("/coupon/{id}")
 	public ResponseEntity<?> updateCoupon(@PathVariable("id") int id, @RequestBody Coupon coupon) {
 		try {
@@ -119,6 +119,15 @@ public class CompanyCTR {
 		return new ResponseEntity<Coupon>(companyService.findCoupon(id), HttpStatus.OK);
 	}
 	
+	@PutMapping("/company/{id}")
+	public ResponseEntity<Company> updateCompany(@PathVariable("id") int id, @RequestBody Company company) {
+		try {
+			companyService.updateCompany(company);
+		} catch (Exception e) {
+			return new ResponseEntity<Company>(company, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Company>(company, HttpStatus.OK);
+	}
 
 //	@GetMapping("/getAllCompanyCoupons/{company_id}")
 //	public List<Coupon> getAllCompanyCoupons(@PathVariable int company_id)
