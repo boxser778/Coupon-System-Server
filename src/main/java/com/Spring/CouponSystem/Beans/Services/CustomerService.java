@@ -1,6 +1,5 @@
 package com.Spring.CouponSystem.Beans.Services;
 
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,69 +22,112 @@ import com.Spring.CouponSystem.Beans.Repository.CustomerRepo;
 import com.Spring.CouponSystem.Login.ClientType;
 import com.Spring.CouponSystem.Login.CouponClient;
 
-
 @Service
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class CustomerService implements CouponClient {
-	
-	
+
 	@Autowired
 	private IncomeService incomeService;
-	
+
 	@Autowired
 	private CustomerRepo customerRepo;
 
 	@Autowired
 	private CouponRepo couponRepo;
+	
+	private Customer customer;
 
+	
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
-//	public Customer purchaseCoupon(Customer cust,Coupon coup) throws Exception {
-//		
-//		for(couponRepo.findAll()) {
-//			if (cust.getId() != coup.getId()) {
-//					throw new Exception();
-//			}else if (coup.getId(coup.getAmount())=0) {
-//				throw new Exception();
-//			}else if (coup.getEndDate().getTime() < coup.getStartDate().getTime()) {
-//				throw new Exception();
-//			}else {
-//				return couponRepo.save(cust.getId(),coup.getId());
-//			}
-//		}
-//		
-//		
-//		
-//		return cust;
+//	public Customer purchaseCoupon(long couponId) throws Exception {
 //
+//		try {
+//			if (!couponRepo.existsById(couponId)) {
+//				throw new Exception("This coupon doesn't exist, please try another one !");
+//			}
+//
+//			Coupon coupon = couponRepo.findById((long) couponId).get();
+//
+//			if (coupon.getAmount() <= 0) {
+//				throw new Exception("This coupon is out of stock !!");
+//			}
+//
+//			if (coupon.getEndDate().getTime() <= coupon.getStartDate().getTime()) {
+//				throw new Exception("This coupon has been expired");
+//			}
+//			
+//			List<Coupon> coupons = getAllCustomerCoupons(this.customer.getId());
+//			Iterator<Coupon> iterator = coupons.iterator();
+//			while(iterator.hasNext()) {
+//				Coupon current = iterator.next();
+//				if (current.getId()==couponId) {
+//					throw new Exception("This coupon cannot be purchased again");
+//				}
+//			}
+//
+//			couponRepo.save(coupon);
+//			Customer customer = customerRepo.findById(this.customer.getId());
+//			customer.getCoupons().add(coupon);
+//			customerRepo.save(customer);
+//			coupon.setAmount(coupon.getAmount() - 1);
+//
+////			Income income = new Income();
+////			income.setClientId(this.customer.getId());
+////			income.setAmount(coupon.getPrice());
+////			income.setDate((Date) DateUtils.getCurrentDate());
+////			income.setDescription(IncomeType.CUSTOMER_PURCHASE);
+////			income.setName("customer " + customer.getCustomerName());
+////			incomeService.storeIncome(income);
+//
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+//		return customer;
 //	}
-			
-			
-			
 	
-			public Customer saveCustomer(Customer customer) {
-				return customerRepo.save(customer);
-			}
-			
-			public void deleteCustomer(Long id) {
-				customerRepo.deleteById(id);
-			}
-			
-			public Customer findCustomerById(int id) {
-				return customerRepo.findById(id);
-			}
+	
+	
+	
+	
+//	public List<Coupon> getAllCustomerCoupons(long customer_id) throws Exception {
+//		Customer customer = customerRepo.getOne(customer_id);
+//		if (customer != null) {
+//			List<Coupon> coupons = customer.getCoupons();
+//			if (coupons != null) {
+//				return coupons;
+//			} else {
+//				throw new Exception("This customer doesn't have any coupons");
+//			}
+//		} else {
+//			throw new Exception("This customer doesn't exist");
+//		}
+//	}
+//	
+	
+	
 
-			@Override
-			public CouponClient login(String name, String password, ClientType clientType)
-					throws LoginException, Exception {
-				// TODO Auto-generated method stub
-				return new CustomerService();
-			}
-			}
+	public Customer saveCustomer(Customer customer) {
+		return customerRepo.save(customer);
+	}
 
-	
-	
-		
-	
+	public void deleteCustomer(Long id) {
+		customerRepo.deleteById(id);
+	}
+
+	public Customer findCustomerById(int id) {
+		return customerRepo.findById(id);
+	}
+
+	@Override
+	public CouponClient login(String name, String password, ClientType clientType) throws LoginException, Exception {
+		// TODO Auto-generated method stub
+		return new CustomerService();
+	}
+
+}
 
 //	public List<Coupon> getAllCustomerCoupons(long customer_id) throws Exception {
 //		Customer customer = customerRepo.getOne(customer_id);
@@ -133,7 +175,6 @@ public class CustomerService implements CouponClient {
 //
 //	
 //}
-	
 
 //	public Customer findCustomerByNameAndPassword(String name, String password) {
 //		return customerRepo.findCustomerByNameAndPassword(name, password);
@@ -173,6 +214,7 @@ public class CustomerService implements CouponClient {
 //					}
 //				}
 //			}
+		
 //			
 //			uniqueCoupons.addAll(customerRepo.getAllCustomerCoupons(cust_id));
 //			// TODO Save coupons without bringing all coupons back
@@ -181,5 +223,3 @@ public class CustomerService implements CouponClient {
 //			
 //		}
 //	}
-	
-	

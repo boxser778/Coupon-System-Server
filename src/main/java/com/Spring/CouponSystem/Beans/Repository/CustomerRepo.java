@@ -71,4 +71,7 @@ public interface CustomerRepo extends JpaRepository<Customer, Long> {
 //	Customer findCustomerByIdAndName(long id, String customerName);
 
 	
+//	@Query("SELECT coup FROM Coupon coup WHERE coup.id IN (SELECT coup.id FROM coup.customers cust WHERE cust.id=?1 AND coup.id = ?2)")
+//	Coupon getCustomerCouponById(int cust_id, int coup_id);
+//	
 }

@@ -20,7 +20,10 @@ public class Customer {
 	private String customerName;
 	private String customerPassword;
 
-	public Customer(int id,String customerName, String customerPassword) {
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Coupon> coupons;
+
+	public Customer(int id, String customerName, String customerPassword) {
 
 		this.id = id;
 		this.customerName = customerName;
@@ -42,7 +45,7 @@ public class Customer {
 		this.id = id;
 	}
 
-	@Column(nullable = false,unique = true)
+	@Column(nullable = false, unique = true)
 	@Basic(optional = false)
 	public String getCustomerName() {
 		return customerName;
@@ -61,10 +64,7 @@ public class Customer {
 	public void setCustomerPassword(String customerPassword) {
 		this.customerPassword = customerPassword;
 	}
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Coupon> coupons;
-	
+
 //	@JoinTable(name = "Customer-Coupon" ){(@JoinColumn (name = "customer_id"))};
 //	@JoinColumns(foreignKey = "customer_Id",value = "id");
 
@@ -73,5 +73,10 @@ public class Customer {
 		return "Customer [id=" + id + ", customerName=" + customerName + ", customerPassword=" + customerPassword
 				+ "] \n\"";
 	}
+
+//	public List<Coupon> getCoupons() {
+//		
+//		return coupons;
+//	}
 
 }

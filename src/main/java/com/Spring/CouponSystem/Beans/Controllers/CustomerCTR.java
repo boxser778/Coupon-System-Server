@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.security.auth.login.LoginException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Spring.CouponSystem.Session;
 import com.Spring.CouponSystem.Beans.Coupon;
+import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
+import com.Spring.CouponSystem.Beans.Services.CustomerService;
 import com.Spring.CouponSystem.Login.ClientType;
 import com.Spring.CouponSystem.Login.CouponClient;
 
@@ -30,6 +33,9 @@ public class CustomerCTR {
 	private CouponRepo couponRepo;
 	
 	@Autowired
+	private CustomerService customerService;
+	
+	@Autowired
 	private Map<String, Session> tokens;
 
 //	private Session exists(String token) {
@@ -41,6 +47,20 @@ public class CustomerCTR {
 		public List<Coupon> getAllCoupons() {
 			return couponRepo.findAll();
 		}
+}
+		
+//		@PostMapping("/purchaseCoupon/{couponId}/{token}")
+//		public ResponseEntity<String> purchaseCoupon(@PathVariable long couponId){
+//				try {
+//					if (customerService.purchaseCoupon(couponId) != null) {
+//					}return new ResponseEntity<>("Customer purchaed coupon :  " + couponId, HttpStatus.OK);
+//				} catch (Exception e) {
+//					return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);
+//				}
+//		}
+//}
+
+
 		
 
 		
@@ -163,4 +183,4 @@ public class CustomerCTR {
 		
 		
 		
-}
+

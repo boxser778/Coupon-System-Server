@@ -21,6 +21,13 @@ public interface CompanyRepo extends JpaRepository<Company, Long> {
 	Company findById(int id);
 
 //	Company findCompanyByCompNameAndPassword(String user, String password);
+	
+	
+//	@Query("select c from Coupon c where c.company = ?1")
+//	List<Coupon> findCompanyCoupons(Company company);
+//	
+//	@Query("select c from Coupon c where c.id = ?1 AND c.company = ?2")
+//	Coupon findCompanyCouponById(int id, Company company);
 
 //Company findCompanyByCompNameAndPassword(String comp_name, String password);
 
@@ -53,4 +60,5 @@ public interface CompanyRepo extends JpaRepository<Company, Long> {
 
 	@Query("select c from Coupon c where c.type = :type")
 	List<Coupon> findCouponsByType(CouponType type);
+	
 }

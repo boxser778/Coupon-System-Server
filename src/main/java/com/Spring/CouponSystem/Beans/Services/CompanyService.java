@@ -2,7 +2,6 @@ package com.Spring.CouponSystem.Beans.Services;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.security.auth.login.LoginException;
 
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
-import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.Spring.CouponSystem.Beans.Repository.CompanyRepo;
 import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
@@ -29,15 +27,61 @@ public class CompanyService implements CouponClient {
 	@Autowired
 	CouponRepo couponRepo;
 
+	private Company company;
+
 	public Company findById(int id) {
 		return companyRepo.findById(id);
 	}
 
-	public Coupon createCoupon(Coupon coupon) {
-		coupon.setId(0);
-		return couponRepo.save(coupon);
+//	public Coupon createCoupon(Coupon coupon) {
+//		coupon.setId(0);
+//		return couponRepo.save(coupon);
+//	}
+	
+	public Coupon createCoupon(Coupon coupon) throws Exception {
+		if (isCouponTitleExist(coupon.getTitle()) == false) {
+			couponRepo.save(coupon);
+			Company comp = companyRepo.findById(this.company.getId());
+			comp.getCoupons().add(coupon);
+			companyRepo.save(comp);
+//			Income income = new Income();
+//			income.setClientId(this.company.getId());
+//			income.setAmount(100.0);
+//			income.setDescription(IncomeType.COMPANY_NEW_COUPON);
+//			income.setDate((Date) DateUtils.getCurrentDate());
+//			income.setName("Company " + company.getCompanyName());
+//			incomeRepository.save(income);
+			
+		} else {
+			throw new Exception("The title " + coupon.getTitle() + " already exist, please try another title");
+		}
+		return coupon;
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	
+//	public int addNewCoupon(Company company, Coupon coupon) {
+//		// check that the name is unique
+//		if (couponRepo.findCouponByTitle(coupon.getTitle()) == null) {
+//			coupon.setCompany(company);
+//			coupon.setId(0);
+//			couponRepo.save(coupon);
+//			
+//			return coupon.getId();
+//		}
+//		return -1;
+//	}
+	
+	
+	
+	
+	
+	
 //	public List<Coupon> getAllCompanyCoupons(long company_id) throws Exception {
 //		Company company = companyRepo.getOne(company_id);
 //		if (company != null) {
@@ -52,9 +96,7 @@ public class CompanyService implements CouponClient {
 //		}
 //	}
 
-//	public Company findByNameAndPassword(String compName, String password) {
-//		return companyRepo.findCompanyByCompNameAndPassword(compName, password);
-//	}
+
 
 //	public boolean deleteCoupon(Company company, long id) {
 //		if (companyRepo.findCompanyCouponById(id, company) != null) {
@@ -65,6 +107,8 @@ public class CompanyService implements CouponClient {
 //		}
 //	}
 
+	
+	
 //	public long addNewCoupon(Company company, Coupon coupon) {
 //		// check that the name is unique
 //		if (couponRepo.findCouponByTitle(coupon.getTitle()) == null) {
@@ -98,12 +142,21 @@ public class CompanyService implements CouponClient {
 	}
 
 	public void setCompany(Company company) {
-	}
+			this.company = company;
+		}
 
 	public boolean isCouponTitleExist(String title) {
-		Coupon coup = couponRepo.findCouponByTitle(title);
-		return coup == null;
+		if (couponRepo.findCouponByTitle(title) != null) {
+			return true;
+		}
+		return false;
 	}
+		
+		
+		
+		//		Coupon coup = couponRepo.findCouponByTitle(title);
+//		return coup == null;
+//	}
 
 	public Coupon updateCoupon(Coupon coupon) {
 
@@ -133,7 +186,6 @@ public class CompanyService implements CouponClient {
 	
 	public Company updateCompany(Company company) {
 		Company currentCompany = companyRepo.findById(company.getId());
-//		currentCompany.setComp_Name(company.getComp_Name());
 		currentCompany.setEmail(company.getEmail());
 		currentCompany.setPassword(company.getPassword());
 		return companyRepo.saveAndFlush(currentCompany);
@@ -147,6 +199,5 @@ public class CompanyService implements CouponClient {
 		return new CompanyService();
 	}
 
-	
 
 }

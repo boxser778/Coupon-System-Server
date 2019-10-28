@@ -197,13 +197,4 @@ public class AdminCTR {
 		return new ResponseEntity<Coupon>(coupon, HttpStatus.OK);
 	}
 	
-	
-	
-//	public CouponClient login(String name, String password, ClientType clientType) {
-//
-//		if (name.equals("admin") && password.equals("1234") && clientType.equals(ClientType.ADMIN)) {
-//
-//		}
-//		return new AdminCTR();
-//	}
 }
