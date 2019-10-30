@@ -97,7 +97,7 @@ public class AdminCTR {
 //////////////////////////////////////////////////////* Post Options *///////////////////////////////////////////////
 
 	// http://localhost:8080/admin/company
-	// {"id":1,"password":"shmuel","email":"zzz","comp_Name":"wava"}
+	// {"password":"shmuel","email":"zzz","comp_Name":"wava"}
 	@PostMapping("/company")
 	public ResponseEntity<?> newCompany(@RequestBody Company c) {
 		if (adminService.isCompNameExists(c.getComp_Name()) == false) {
@@ -166,7 +166,7 @@ public class AdminCTR {
 	}
 
 //////////////////////////////////////////////////////* Update Options *///////////////////////////////////////////////
-//	, consumes = "application/json", produces = "application/json"
+	
 	@PutMapping("/company/{id}")
 	public ResponseEntity<Company> updateCompany(@PathVariable("id") int id, @RequestBody Company company) {
 		try {

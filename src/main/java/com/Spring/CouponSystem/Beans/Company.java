@@ -1,38 +1,43 @@
 package com.Spring.CouponSystem.Beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "Company")
+@Table(name = "company")
 public class Company {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String comp_name;
+
+	@Basic(optional = false)
+	@Column(nullable = false)
+	private String comp_Name;
+
+	@Basic(optional = false)
+	@Column(nullable = false)
 	private String password;
+
+	@Basic(optional = false)
+	@Column(nullable = false)
 	private String email;
 
-	private List<Coupon> coupons;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)
+	@JsonManagedReference
+	private List<Coupon> coupons = new ArrayList<>(0);
 
 	public Company() {
 
@@ -46,10 +51,6 @@ public class Company {
 		setEmail(email);
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Basic(optional = false)
-	@Column(name = "company_id")
 	public int getId() {
 		return id;
 	}
@@ -58,18 +59,14 @@ public class Company {
 		this.id = id;
 	}
 
-	@Column(nullable = false, unique = true)
-	@Basic(optional = false)
 	public String getComp_Name() {
-		return comp_name;
+		return comp_Name;
 	}
 
 	public void setComp_Name(String comp_name) {
-		this.comp_name = comp_name;
+		this.comp_Name = comp_name;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public String getPassword() {
 		return password;
 	}
@@ -78,8 +75,6 @@ public class Company {
 		this.password = password;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public String getEmail() {
 		return email;
 	}
@@ -88,11 +83,6 @@ public class Company {
 		this.email = email;
 	}
 
-
-	@OneToMany(mappedBy = "company",fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
-//	@JsonManagedReference
-//	@JsonBackReference
-//	@JsonIgnore
 	public List<Coupon> getCoupons() {
 		return coupons;
 	}
@@ -103,7 +93,7 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ",comp_name=" + comp_name + ", password=" + password + ", email=" + email
+		return "Company [id=" + id + ",comp_name=" + comp_Name + ", password=" + password + ", email=" + email
 				+ "] \n\"";
 	}
 

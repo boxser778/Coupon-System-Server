@@ -3,12 +3,10 @@ package com.Spring.CouponSystem.Beans;
 import java.util.Date;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,40 +16,58 @@ import javax.persistence.Table;
 
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 
 @Entity
-@Table(name = "Coupon")
+@Table(name = "coupon")
 public class Coupon {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private String title;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private int amount;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private Date startDate;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private Date endDate;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private CouponType type;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private String msg;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private double price;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private String picture;
 
+	@ManyToOne
+	@JoinColumn(name = "company_id")
+	@JsonBackReference
 	private Company company;
-
-//	@ManyToMany(mappedBy = "coupons")
-//	private List<Customer> customers;
 
 	public Coupon() {
 
 	}
 
-
 	public Coupon(int id, String title, int amount, Date startDate, Date endDate, CouponType type, String msg,
-			double price, String picture,Company company) {
+			double price, String picture, Company company) {
 
 		this.id = id;
 		this.title = title;
@@ -63,22 +79,17 @@ public class Coupon {
 		this.price = price;
 		this.picture = picture;
 		this.company = company;
+
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Basic(optional = false)
-	@Column(name = "coupon_id")
-	public int getId() {
+	public int getid() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setid(int id) {
 		this.id = id;
 	}
 
-	@Column(nullable = false, unique = true)
-	@Basic(optional = false)
 	public String getTitle() {
 		return title;
 	}
@@ -87,8 +98,6 @@ public class Coupon {
 		this.title = title;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public int getAmount() {
 		return amount;
 	}
@@ -97,8 +106,6 @@ public class Coupon {
 		this.amount = amount;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -107,8 +114,6 @@ public class Coupon {
 		this.startDate = startDate;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -117,8 +122,6 @@ public class Coupon {
 		this.endDate = endDate;
 	}
 
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
 	public CouponType getType() {
 		return type;
 	}
@@ -127,8 +130,6 @@ public class Coupon {
 		this.type = type;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public String getMsg() {
 		return msg;
 	}
@@ -137,8 +138,6 @@ public class Coupon {
 		this.msg = msg;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public double getPrice() {
 		return price;
 	}
@@ -147,8 +146,6 @@ public class Coupon {
 		this.price = price;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public String getPicture() {
 		return picture;
 	}
@@ -157,10 +154,6 @@ public class Coupon {
 		this.picture = picture;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "company_id")
-//	@JsonBackReference
-//	@JsonManagedReference
 	public Company getCompany() {
 		return company;
 	}
@@ -169,14 +162,11 @@ public class Coupon {
 		this.company = company;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Coupon [id=" + id + ", title=" + title + ", amount=" + amount + ", startDate=" + startDate
 				+ ", endDate=" + endDate + ", type=" + type + ", msg=" + msg + ", price=" + price + ", picture="
-				+ picture + ", companyId=" + company.getId() + "]";
+				+ picture + "]";
 	}
-
-	
 
 }

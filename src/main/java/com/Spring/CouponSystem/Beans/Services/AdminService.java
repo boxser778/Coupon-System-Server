@@ -121,13 +121,13 @@ public class AdminService implements CouponClient {
 	}
 
 	public Coupon createCoupon(Coupon coupon) {
-			coupon.setId(0);
+			coupon.setid(0);
 		return couponRepo.save(coupon);
 	}
 
 	public Coupon updateCoupon(Coupon coupon) {
 		
-		Coupon currentCoupon = couponRepo.findById(coupon.getId());
+		Coupon currentCoupon = couponRepo.findById(coupon.getid());
 		currentCoupon.setEndDate(coupon.getEndDate());
 		currentCoupon.setPrice(coupon.getPrice());
 		return couponRepo.saveAndFlush(currentCoupon);
@@ -144,7 +144,7 @@ public class AdminService implements CouponClient {
 	}
 
 	public boolean isCouponTitleExist(String title) {
-		Coupon coup = couponRepo.findCouponByTitle(title);
+		Coupon coup = couponRepo.findByTitle(title);
 		return coup == null;
 	}
 

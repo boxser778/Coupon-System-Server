@@ -33,17 +33,29 @@ public class CompanyService implements CouponClient {
 		return companyRepo.findById(id);
 	}
 
-//	public Coupon createCoupon(Coupon coupon) {
-//		coupon.setId(0);
-//		return couponRepo.save(coupon);
-//	}
+	public boolean checkIfTitleAlreadyExists(String title) {
+		if (couponRepo.findByTitle(title) != null) {
+			return true;
+		}
+		return false;
+	}
 	
-	public Coupon createCoupon(Coupon coupon) throws Exception {
-		if (isCouponTitleExist(coupon.getTitle()) == false) {
-			couponRepo.save(coupon);
-			Company comp = companyRepo.findById(this.company.getId());
-			comp.getCoupons().add(coupon);
-			companyRepo.save(comp);
+	public boolean checkIfCompanyExists(int id) {
+		if (companyRepo.findById(id) != null) {
+			return true;
+		}
+		return false;
+	}
+
+	public Coupon createCoupon(Coupon coupon, int companyId) throws Exception {
+		if (checkIfTitleAlreadyExists(coupon.getTitle()) == false) {
+			coupon.setCompany(companyRepo.findById(companyId));
+			if (checkIfCompanyExists(companyId)) {
+				couponRepo.save(coupon);
+			}else {
+				throw new Exception("This Company is not exists");
+			}
+			
 //			Income income = new Income();
 //			income.setClientId(this.company.getId());
 //			income.setAmount(100.0);
@@ -51,37 +63,13 @@ public class CompanyService implements CouponClient {
 //			income.setDate((Date) DateUtils.getCurrentDate());
 //			income.setName("Company " + company.getCompanyName());
 //			incomeRepository.save(income);
-			
+
 		} else {
 			throw new Exception("The title " + coupon.getTitle() + " already exist, please try another title");
 		}
 		return coupon;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-//	public int addNewCoupon(Company company, Coupon coupon) {
-//		// check that the name is unique
-//		if (couponRepo.findCouponByTitle(coupon.getTitle()) == null) {
-//			coupon.setCompany(company);
-//			coupon.setId(0);
-//			couponRepo.save(coupon);
-//			
-//			return coupon.getId();
-//		}
-//		return -1;
-//	}
-	
-	
-	
-	
-	
-	
+
 //	public List<Coupon> getAllCompanyCoupons(long company_id) throws Exception {
 //		Company company = companyRepo.getOne(company_id);
 //		if (company != null) {
@@ -96,8 +84,6 @@ public class CompanyService implements CouponClient {
 //		}
 //	}
 
-
-
 //	public boolean deleteCoupon(Company company, long id) {
 //		if (companyRepo.findCompanyCouponById(id, company) != null) {
 //			couponRepo.removeCoupon(id);
@@ -105,20 +91,6 @@ public class CompanyService implements CouponClient {
 //		} else {
 //			return false;
 //		}
-//	}
-
-	
-	
-//	public long addNewCoupon(Company company, Coupon coupon) {
-//		// check that the name is unique
-//		if (couponRepo.findCouponByTitle(coupon.getTitle()) == null) {
-//			coupon.setCompany(company);
-//			coupon.setId(0);
-//			couponRepo.save(coupon);
-//			
-//			return coupon.getId();
-//		}
-//		return -1;
 //	}
 
 	public Coupon findCoupon(int id) {
@@ -142,25 +114,12 @@ public class CompanyService implements CouponClient {
 	}
 
 	public void setCompany(Company company) {
-			this.company = company;
-		}
-
-	public boolean isCouponTitleExist(String title) {
-		if (couponRepo.findCouponByTitle(title) != null) {
-			return true;
-		}
-		return false;
+		this.company = company;
 	}
-		
-		
-		
-		//		Coupon coup = couponRepo.findCouponByTitle(title);
-//		return coup == null;
-//	}
 
 	public Coupon updateCoupon(Coupon coupon) {
 
-		Coupon currentCoupon = couponRepo.findById(coupon.getId());
+		Coupon currentCoupon = couponRepo.findById(coupon.getid());
 		currentCoupon.setEndDate(coupon.getEndDate());
 		currentCoupon.setPrice(coupon.getPrice());
 		return couponRepo.saveAndFlush(currentCoupon);
@@ -183,7 +142,7 @@ public class CompanyService implements CouponClient {
 	public List<Coupon> findAllCoupons() {
 		return couponRepo.findAll();
 	}
-	
+
 	public Company updateCompany(Company company) {
 		Company currentCompany = companyRepo.findById(company.getId());
 		currentCompany.setEmail(company.getEmail());
@@ -198,6 +157,5 @@ public class CompanyService implements CouponClient {
 
 		return new CompanyService();
 	}
-
 
 }

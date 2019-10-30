@@ -28,6 +28,7 @@ import com.Spring.CouponSystem.Session;
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
+import com.Spring.CouponSystem.Beans.Repository.CompanyRepo;
 import com.Spring.CouponSystem.Beans.Services.CompanyService;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -40,29 +41,35 @@ public class CompanyCTR {
 
 	@Autowired
 	private Map<String, Session> tokens;
+
+	@Autowired
+	CompanyRepo companyRepo;
+
 	
-//	@PostMapping("/coupon")
-//	public ResponseEntity<?> newCoupon(@RequestBody Coupon c) throws Exception {
-//		if (companyService.isCouponTitleExist(c.getTitle()) == false) {
-//			return new ResponseEntity<String>("Coupon Title Exist", HttpStatus.BAD_REQUEST);
-//		} else
-//			return new ResponseEntity<Coupon>(companyService.createCoupon(c), HttpStatus.OK);
+//	http://localhost:8080/company/coupon/{companyId}
+//	{
+//	    "title": "adaddd333dad",
+//	    "amount": 1,
+//	    "startDate": 1569888000000,
+//	    "endDate": 1571097600000,
+//	    "type": "CLOTHING",
+//	    "msg": "aaa",
+//	    "price": 22,
+//	    "picture": "https://analyticsindiamag.com/wp-content/uploads/2019/07/image_rec_lib_banner.jpg"
 //	}
 	
-	
+	@PostMapping(value = "/coupon/{companyId}")
+	@ResponseBody
+	public ResponseEntity<String> createCoupon(@RequestBody Coupon coupon, @PathVariable("companyId") int id) {
+		try {
+				companyService.createCoupon(coupon, id);
+			return new ResponseEntity<>("coupon created", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);
+		}
 
-	@PostMapping(value = "/createCoupon",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody public ResponseEntity<String> createCoupon(@RequestBody Coupon coupon){
-			try {
-				companyService.createCoupon(coupon);
-				return new ResponseEntity<>("coupon created  " + coupon, HttpStatus.OK);
-			} catch (Exception e) {
-				return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);
-			}
+	}
 
-}
-	
-	
 	@PutMapping("/coupon/{id}")
 	public ResponseEntity<?> updateCoupon(@PathVariable("id") int id, @RequestBody Coupon coupon) {
 		try {
@@ -81,15 +88,6 @@ public class CompanyCTR {
 			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<String>("Coupon Deleled!", HttpStatus.OK);
-	}
-	
-	
-	@GetMapping("/company/{id}")
-	public ResponseEntity<?> getCompany(@PathVariable("id") int id) {
-		if (companyService.findCompany(id) == null) {
-			return new ResponseEntity<String>("This Id Not Exist!", HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<Company>(companyService.findCompany(id), HttpStatus.OK);
 	}
 
 	@GetMapping("/coupon")
@@ -120,24 +118,5 @@ public class CompanyCTR {
 		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByType(type), HttpStatus.OK);
 
 	}
-
-	@GetMapping("/coupon/{id}")
-	public ResponseEntity<?> getCoupon(@PathVariable("id") int id) {
-		if (companyService.findCoupon(id) == null) {
-			return new ResponseEntity<String>("This Id Not Exist!", HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<Coupon>(companyService.findCoupon(id), HttpStatus.OK);
-	}
-	
-	@PutMapping("/company/{id}")
-	public ResponseEntity<Company> updateCompany(@PathVariable("id") int id, @RequestBody Company company) {
-		try {
-			companyService.updateCompany(company);
-		} catch (Exception e) {
-			return new ResponseEntity<Company>(company, HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<Company>(company, HttpStatus.OK);
-	}
-
 
 }

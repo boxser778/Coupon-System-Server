@@ -19,11 +19,11 @@ import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 
 @Repository
-public interface CouponRepo extends JpaRepository<Coupon, Long>{
+public interface CouponRepo extends JpaRepository<Coupon, Integer> {
 
 	@Query("Select c from Coupon c where c.id = :id")
 	Coupon findById(int id);
-	
+
 	@Query("Select c from Coupon c where c.type = :type")
 	List<Coupon> findByType(String type);
 
@@ -31,12 +31,11 @@ public interface CouponRepo extends JpaRepository<Coupon, Long>{
 	@Modifying
 	@Query("DELETE FROM Coupon c WHERE c.id = :id")
 	void removeCoupon(@Param("id") int id);
-	
+
 	public List<Coupon> findByEndDate(Date endDate);
 
 	@Query("Select c from Coupon c where c.title = :title")
-	Coupon findCouponByTitle(String title);
+	Coupon findByTitle(String title);
 
 	Customer save(int id);
 }
-
