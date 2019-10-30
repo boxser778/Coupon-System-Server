@@ -1,5 +1,6 @@
 package com.Spring.CouponSystem.Beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -7,36 +8,52 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@Table(name = "customer")
 public class Customer {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private String customerName;
+
+	@Column(nullable = false)
+	@Basic(optional = false)
 	private String customerPassword;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Coupon> coupons;
-
-	public Customer(int id, String customerName, String customerPassword) {
-
-		this.id = id;
-		this.customerName = customerName;
-		this.customerPassword = customerPassword;
-	}
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "Customer_Coupons", joinColumns = { @JoinColumn(name = "customer_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "coupon_id") })
+	private List<Coupon> coupons = new ArrayList<>(0);;
 
 	public Customer() {
 
 	}
 
-	@Id
-	@GeneratedValue
-	@Basic(optional = false)
+	public Customer(int id, String customerName, String customerPassword, List<Coupon> coupons) {
+
+		this.id = id;
+		this.customerName = customerName;
+		this.customerPassword = customerPassword;
+		this.coupons = coupons;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -45,8 +62,6 @@ public class Customer {
 		this.id = id;
 	}
 
-	@Column(nullable = false, unique = true)
-	@Basic(optional = false)
 	public String getCustomerName() {
 		return customerName;
 	}
@@ -55,8 +70,6 @@ public class Customer {
 		this.customerName = customerName;
 	}
 
-	@Column(nullable = false)
-	@Basic(optional = false)
 	public String getCustomerPassword() {
 		return customerPassword;
 	}
@@ -65,18 +78,18 @@ public class Customer {
 		this.customerPassword = customerPassword;
 	}
 
-//	@JoinTable(name = "Customer-Coupon" ){(@JoinColumn (name = "customer_id"))};
-//	@JoinColumns(foreignKey = "customer_Id",value = "id");
+	public List<Coupon> getCoupons() {
+		return coupons;
+	}
+
+	public void setCoupons(List<Coupon> coupons) {
+		this.coupons = coupons;
+	}
 
 	@Override
 	public String toString() {
 		return "Customer [id=" + id + ", customerName=" + customerName + ", customerPassword=" + customerPassword
 				+ "] \n\"";
 	}
-
-//	public List<Coupon> getCoupons() {
-//		
-//		return coupons;
-//	}
 
 }

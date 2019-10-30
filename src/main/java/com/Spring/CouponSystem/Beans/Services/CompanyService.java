@@ -39,7 +39,7 @@ public class CompanyService implements CouponClient {
 		}
 		return false;
 	}
-	
+
 	public boolean checkIfCompanyExists(int id) {
 		if (companyRepo.findById(id) != null) {
 			return true;
@@ -52,10 +52,10 @@ public class CompanyService implements CouponClient {
 			coupon.setCompany(companyRepo.findById(companyId));
 			if (checkIfCompanyExists(companyId)) {
 				couponRepo.save(coupon);
-			}else {
+			} else {
 				throw new Exception("This Company is not exists");
 			}
-			
+
 //			Income income = new Income();
 //			income.setClientId(this.company.getId());
 //			income.setAmount(100.0);
@@ -70,32 +70,29 @@ public class CompanyService implements CouponClient {
 		return coupon;
 	}
 
-//	public List<Coupon> getAllCompanyCoupons(long company_id) throws Exception {
-//		Company company = companyRepo.getOne(company_id);
-//		if (company != null) {
-//			List<Coupon> coupons = company.getCoupons();
-//			if (coupons != null) {
-//				return coupons;
-//			} else {
-//				throw new Exception("This company doesn't have any coupons");
-//			}
-//		} else {
-//			throw new Exception("This company doesn't exist");
-//		}
-//	}
+	public List<Coupon> getAllCompanyCoupons(int company_id) throws Exception {
+		Company company = companyRepo.getOne(company_id);
+		if (company != null) {
+			List<Coupon> coupons = company.getCoupons();
+			return coupons;
+		} else {
+			throw new Exception("This company doesn't exist");
+		}
 
-//	public boolean deleteCoupon(Company company, long id) {
-//		if (companyRepo.findCompanyCouponById(id, company) != null) {
-//			couponRepo.removeCoupon(id);
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-
-	public Coupon findCoupon(int id) {
-		return couponRepo.findById(id);
 	}
+
+	public boolean deleteCoupon(Company company, int company_id) {
+		if (companyRepo.findCompanyByCoupons(company_id)!= null) {
+			couponRepo.removeCoupon(company_id);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+//	public Coupon findCoupon(int id) {
+//		return couponRepo.findById(id);
+//	}
 
 	public List<Coupon> getCouponsByEndDate(Date endDate) {
 		return companyRepo.findCouponsByDate(endDate);
@@ -117,14 +114,14 @@ public class CompanyService implements CouponClient {
 		this.company = company;
 	}
 
-	public Coupon updateCoupon(Coupon coupon) {
-
-		Coupon currentCoupon = couponRepo.findById(coupon.getid());
-		currentCoupon.setEndDate(coupon.getEndDate());
-		currentCoupon.setPrice(coupon.getPrice());
-		return couponRepo.saveAndFlush(currentCoupon);
-
-	}
+//	public Coupon updateCoupon(Coupon coupon) {
+//
+//		Coupon currentCoupon = couponRepo.findById(coupon.getid());
+//		currentCoupon.setEndDate(coupon.getEndDate());
+//		currentCoupon.setPrice(coupon.getPrice());
+//		return couponRepo.saveAndFlush(currentCoupon);
+//
+//	}
 
 	public boolean deleteCoupon(Coupon coupon) {
 		try {

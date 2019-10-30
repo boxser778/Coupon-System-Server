@@ -33,8 +33,11 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
 	@Query("Select c from Company c where c.comp_Name = :compName")
 	Company findCompanyByCompName(String compName);
 
-//	@Query("select c from Coupon c where c.company = ?1")
-//	Set<Coupon> findCompanyCoupons(Company company);
+//	@Query("SELECT company FROM COMPANY as company join company.coupons as c.id=:couponId")
+	List<Coupon> findCompanyByCoupons(int  companyId);
+	
+//	@Query("SELECT company FROM COMPANY as company join company.coupons as c.id=:couponId")
+//	List<Company> findCompanyByCoupons(int couponId);
 
 //	@Query("select c from Coupon c where c.id = ?1 AND c.company = ?2")
 //	Coupon findCompanyCouponById(long id, Company company);
@@ -42,14 +45,11 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
 //	@Query("select c from Coupon c where c.price < ?1 AND c.company = ?2")
 //	Set<Coupon> findCompanyCouponsByPrice(double price, Company company);
 //	
-//	@Query("select c from Coupon c where c.type = ?1 AND c.company = ?2")
-//	Set<Coupon> findCompanyCouponsByType(CouponType type, Company company);
-//	
+//	@Query("select c from Coupon c where c.endDate = ?1 AND c.company = ?2")
+//	List<Coupon> findCouponsByDate(Date endDate, Company company);
+
 	@Query("select c from Coupon c where c.endDate = :endDate")
 	List<Coupon> findCouponsByDate(Date endDate);
-
-//	@Query("Select c from Company c where c.comp_Name = :user AND c.password = :password")
-//	Company findCompanyByCompNameAndPassword(String user, String password);
 
 	@Query("select c from Company c where c.comp_Name = :name And c.password = :password")
 	Company findByCompanyNameAndPassword(String name, String password);

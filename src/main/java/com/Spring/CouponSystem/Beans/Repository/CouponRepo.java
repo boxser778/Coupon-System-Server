@@ -36,6 +36,4 @@ public interface CouponRepo extends JpaRepository<Coupon, Integer> {
 
 	@Query("Select c from Coupon c where c.title = :title")
 	Coupon findByTitle(String title);
-
-	Customer save(int id);
 }

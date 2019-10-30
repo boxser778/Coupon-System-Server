@@ -45,7 +45,6 @@ public class CompanyCTR {
 	@Autowired
 	CompanyRepo companyRepo;
 
-	
 //	http://localhost:8080/company/coupon/{companyId}
 //	{
 //	    "title": "adaddd333dad",
@@ -57,12 +56,12 @@ public class CompanyCTR {
 //	    "price": 22,
 //	    "picture": "https://analyticsindiamag.com/wp-content/uploads/2019/07/image_rec_lib_banner.jpg"
 //	}
-	
+
 	@PostMapping(value = "/coupon/{companyId}")
 	@ResponseBody
 	public ResponseEntity<String> createCoupon(@RequestBody Coupon coupon, @PathVariable("companyId") int id) {
 		try {
-				companyService.createCoupon(coupon, id);
+			companyService.createCoupon(coupon, id);
 			return new ResponseEntity<>("coupon created", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);
@@ -70,15 +69,15 @@ public class CompanyCTR {
 
 	}
 
-	@PutMapping("/coupon/{id}")
-	public ResponseEntity<?> updateCoupon(@PathVariable("id") int id, @RequestBody Coupon coupon) {
-		try {
-			companyService.updateCoupon(coupon);
-		} catch (Exception e) {
-			return new ResponseEntity<String>("Some problem", HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<Coupon>(coupon, HttpStatus.OK);
-	}
+//	@PutMapping("/coupon/{id}")
+//	public ResponseEntity<?> updateCoupon(@PathVariable("id") int id, @RequestBody Coupon coupon) {
+//		try {
+//			companyService.updateCoupon(coupon);
+//		} catch (Exception e) {
+//			return new ResponseEntity<String>("Some problem", HttpStatus.BAD_REQUEST);
+//		}
+//		return new ResponseEntity<Coupon>(coupon, HttpStatus.OK);
+//	}
 
 	@DeleteMapping("/coupon/{id}")
 	public ResponseEntity<?> removeCoupon(@PathParam("id") Coupon coupon) {
@@ -90,9 +89,14 @@ public class CompanyCTR {
 		return new ResponseEntity<String>("Coupon Deleled!", HttpStatus.OK);
 	}
 
-	@GetMapping("/coupon")
-	public ResponseEntity<List<Coupon>> getAllCoupons() {
-		return new ResponseEntity<List<Coupon>>(companyService.findAllCoupons(), HttpStatus.OK);
+	@GetMapping("/getAllCompanyCoupons/{company_id}")
+	public List<Coupon> getAllCompanyCoupons(@PathVariable int company_id) {
+		try {
+			return companyService.getAllCompanyCoupons(company_id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 
 	@GetMapping("/couponByDate/{date}")

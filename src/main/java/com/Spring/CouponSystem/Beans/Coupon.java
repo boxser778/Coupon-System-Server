@@ -1,6 +1,8 @@
 package com.Spring.CouponSystem.Beans;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -61,6 +64,9 @@ public class Coupon {
 	@JoinColumn(name = "company_id")
 	@JsonBackReference
 	private Company company;
+
+	@ManyToMany(mappedBy = "coupons")
+	private List<Customer> customers = new ArrayList<>(0);
 
 	public Coupon() {
 
@@ -160,6 +166,14 @@ public class Coupon {
 
 	public void setCompany(Company company) {
 		this.company = company;
+	}
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	public void setCustomers(List<Customer> customers) {
+		this.customers = customers;
 	}
 
 	@Override
