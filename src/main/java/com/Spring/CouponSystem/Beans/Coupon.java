@@ -5,20 +5,24 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "coupon")
@@ -62,18 +66,20 @@ public class Coupon {
 
 	@ManyToOne
 	@JoinColumn(name = "company_id")
-	@JsonBackReference
+	@JsonBackReference("company")
 	private Company company;
 
-	@ManyToMany(mappedBy = "coupons")
-	private List<Customer> customers = new ArrayList<>(0);
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	@JsonBackReference("customer")
+	private Customer customer;
 
 	public Coupon() {
 
 	}
 
 	public Coupon(int id, String title, int amount, Date startDate, Date endDate, CouponType type, String msg,
-			double price, String picture, Company company) {
+			double price, String picture) {
 
 		this.id = id;
 		this.title = title;
@@ -84,7 +90,6 @@ public class Coupon {
 		this.msg = msg;
 		this.price = price;
 		this.picture = picture;
-		this.company = company;
 
 	}
 
@@ -168,12 +173,12 @@ public class Coupon {
 		this.company = company;
 	}
 
-	public List<Customer> getCustomers() {
-		return customers;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	@Override

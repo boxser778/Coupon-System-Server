@@ -7,6 +7,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,21 +38,19 @@ public class Customer {
 	@Basic(optional = false)
 	private String customerPassword;
 
-	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "Customer_Coupons", joinColumns = { @JoinColumn(name = "customer_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "coupon_id") })
-	private List<Coupon> coupons = new ArrayList<>(0);;
+	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "customer", orphanRemoval = true)
+	@JsonManagedReference("customer")
+	private List<Coupon> coupons = new ArrayList<>(0);
 
 	public Customer() {
 
 	}
 
-	public Customer(int id, String customerName, String customerPassword, List<Coupon> coupons) {
+	public Customer(int id, String customerName, String customerPassword) {
 
 		this.id = id;
 		this.customerName = customerName;
 		this.customerPassword = customerPassword;
-		this.coupons = coupons;
 	}
 
 	public int getId() {

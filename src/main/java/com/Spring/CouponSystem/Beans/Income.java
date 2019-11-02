@@ -17,68 +17,68 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 public class Income {
 
-	
-	private int id;
-	private String name;
-	private Date date;
-	private IncomeType description;
-	private double amount;
-	
 	@Id
 	@GeneratedValue
+	private int id;
+
+	@Column(nullable = false)
+	private String name;
+
+	@Column(nullable = false)
+//	@JsonFormat(pattern="dd-MM-yyyy")
+//	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	private Date date;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private IncomeType description;
+
+	@Column(nullable = false)
+	private double amount;
+
 	public int getid() {
 		return id;
 	}
-	
+
 	public void setid(int id) {
 		this.id = id;
 	}
-	
-	@Column(nullable = false)
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	@Column(nullable = false)
-	@JsonFormat(pattern="yyyy-MM-dd")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+
 	public Date getDate() {
 		return date;
 	}
-	
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
+
 	public IncomeType getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(IncomeType description) {
 		this.description = description;
 	}
-	
-	@Column(nullable = false)
+
 	public double getAmount() {
 		return amount;
 	}
-	
+
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "Income [id=" + id + ", name=" + name + ", date=" + date + ", description=" + description
-				+ ", amount=" + amount + "]";
+		return "Income [id=" + id + ", name=" + name + ", date=" + date + ", description=" + description + ", amount="
+				+ amount + "]";
 	}
 }
-	
-	

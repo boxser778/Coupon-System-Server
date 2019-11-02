@@ -70,6 +70,21 @@ public class CompanyService implements CouponClient {
 		return coupon;
 	}
 
+	public Coupon updateCoupon(Coupon coupon) {
+		Coupon currentCoupon = couponRepo.findById(coupon.getid());
+		currentCoupon.setEndDate(coupon.getEndDate());
+		currentCoupon.setPrice(coupon.getPrice());
+		return couponRepo.save(currentCoupon);
+
+	}
+
+	public boolean deleteCoupon(Coupon coupon, int companyId) {
+		if (true) {
+			couponRepo.removeCoupon(coupon.getid());
+		}
+		return false;
+	}
+
 	public List<Coupon> getAllCompanyCoupons(int company_id) throws Exception {
 		Company company = companyRepo.getOne(company_id);
 		if (company != null) {
@@ -81,31 +96,6 @@ public class CompanyService implements CouponClient {
 
 	}
 
-	public boolean deleteCoupon(Company company, int company_id) {
-		if (companyRepo.findCompanyByCoupons(company_id)!= null) {
-			couponRepo.removeCoupon(company_id);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-//	public Coupon findCoupon(int id) {
-//		return couponRepo.findById(id);
-//	}
-
-	public List<Coupon> getCouponsByEndDate(Date endDate) {
-		return companyRepo.findCouponsByDate(endDate);
-	}
-
-	public List<Coupon> getCouponsByPrice(double price) {
-		return companyRepo.findCouponsByPrice(price);
-	}
-
-	public List<Coupon> getCouponsByType(CouponType type) {
-		return companyRepo.findCouponsByType(type);
-	}
-
 	public void saveCompany(Company company) {
 		companyRepo.save(company);
 	}
@@ -113,15 +103,6 @@ public class CompanyService implements CouponClient {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-
-//	public Coupon updateCoupon(Coupon coupon) {
-//
-//		Coupon currentCoupon = couponRepo.findById(coupon.getid());
-//		currentCoupon.setEndDate(coupon.getEndDate());
-//		currentCoupon.setPrice(coupon.getPrice());
-//		return couponRepo.saveAndFlush(currentCoupon);
-//
-//	}
 
 	public boolean deleteCoupon(Coupon coupon) {
 		try {
@@ -132,20 +113,21 @@ public class CompanyService implements CouponClient {
 		}
 	}
 
-	public Company findCompany(int id) {
-		return companyRepo.findById(id);
-	}
-
 	public List<Coupon> findAllCoupons() {
 		return couponRepo.findAll();
 	}
 
-	public Company updateCompany(Company company) {
-		Company currentCompany = companyRepo.findById(company.getId());
-		currentCompany.setEmail(company.getEmail());
-		currentCompany.setPassword(company.getPassword());
-		return companyRepo.saveAndFlush(currentCompany);
-	}
+//	public List<Coupon> getCouponsByEndDate(Date endDate) {
+//	return companyRepo.findCouponsByDate(endDate);
+//}
+//
+//public List<Coupon> getCouponsByPrice(double price) {
+//	return companyRepo.findCouponsByPrice(price);
+//}
+//
+//public List<Coupon> getCouponsByType(CouponType type) {
+//	return companyRepo.findCouponsByType(type);
+//}
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

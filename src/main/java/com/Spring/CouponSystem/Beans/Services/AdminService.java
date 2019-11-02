@@ -116,23 +116,23 @@ public class AdminService implements CouponClient {
 		return couponRepo.findAll();
 	}
 
-	public Coupon findCoupon(int id) {
-		return couponRepo.findById(id);
-	}
+//	public Coupon findCoupon(int id) {
+//		return couponRepo.findById(id);
+//	}
 
 	public Coupon createCoupon(Coupon coupon) {
 			coupon.setid(0);
 		return couponRepo.save(coupon);
 	}
 
-	public Coupon updateCoupon(Coupon coupon) {
-		
-		Coupon currentCoupon = couponRepo.findById(coupon.getid());
-		currentCoupon.setEndDate(coupon.getEndDate());
-		currentCoupon.setPrice(coupon.getPrice());
-		return couponRepo.saveAndFlush(currentCoupon);
-		
-	}
+//	public Coupon updateCoupon(Coupon coupon) {
+//		
+//		Coupon currentCoupon = couponRepo.findById(coupon.getid());
+//		currentCoupon.setEndDate(coupon.getEndDate());
+//		currentCoupon.setPrice(coupon.getPrice());
+//		return couponRepo.saveAndFlush(currentCoupon);
+//		
+//	}
 
 	public boolean deleteCoupon(Coupon coupon) {
 		try {

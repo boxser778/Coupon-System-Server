@@ -1,5 +1,6 @@
 package com.Spring.CouponSystem.Beans.Controllers;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Spring.CouponSystem.Session;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
+import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
 import com.Spring.CouponSystem.Beans.Services.CustomerService;
 import com.Spring.CouponSystem.Login.ClientType;
@@ -42,25 +44,50 @@ public class CustomerCTR {
 //		return LoginController.tokens.get(token);
 //	}
 
-	// http://localhost:8080/customer/coupon
-	@GetMapping("/coupon")
-	public List<Coupon> getAllCoupons() {
-		return couponRepo.findAll();
-	}
-}
+//	http://localhost:8080/coupon-system/customer/coupon/{customerid}
+// 	coupon id = {"id" : 1}
+	@PostMapping("/coupon/{customerid}")
+	public ResponseEntity<String> purchaseCoupon(@RequestBody Coupon coupon,
+			@PathVariable("customerid") int customerId) {
+		try {
+			customerService.purchaseCoupon(coupon, customerId);
+			return new ResponseEntity<>("Customer purchaed coupon", HttpStatus.OK);
 
-//	@PostMapping("/purchaseCoupon/{couponId}")
-//	public ResponseEntity<String> purchaseCoupon(@RequestBody Customer customer,
-//			@PathVariable("couponId") int couponId) {
-//		try {
-//			customerService.purchaseCoupon(customer, couponId);
-//			return new ResponseEntity<>("Customer purchaed coupon  ", HttpStatus.OK);
-//			
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+//	http://localhost:8080/coupon-system/customer/coupon/{customerid}
+	@GetMapping("/coupon/{customerid}")
+	public List<Coupon> getAllCustomerCoupons(@PathVariable int customerid) {
+		try {
+			return customerService.getAllCustomerCoupons(customerid);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+//	@GetMapping("/couponbytype/{type}")
+//	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type) {
+//		if (customerService.getCouponsByType(type) == null) {
+//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
 //		}
+//		return new ResponseEntity<List<Coupon>>(customerService.getCouponsByType(type), HttpStatus.OK);
+//
 //	}
-//}
+
+//	@GetMapping("/couponbyprice/{price}")
+//	public ResponseEntity<?> getCouponsByPrice(@PathVariable("price") double price) throws Exception {
+//		if (customerService.findCustomerCouponsByPrice(price) == null) {
+//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+//		}
+//		return new ResponseEntity<List<Coupon>>(customerService.findCustomerCouponsByPrice(price), HttpStatus.OK);
+//
+//	}
+
+}
 
 //		public CustomerCTR login(String name, String password, ClientType clientType) throws LoginException, Exception {
 //			
@@ -70,205 +97,3 @@ public class CustomerCTR {
 //			return new CustomerCTR();
 //
 //		}
-
-//		@Autowired
-//		private CustomerService customerService;
-//		
-//
-//		@Autowired
-//		private Map<String, Session> tokens;
-//
-//		private Session exists(String token) {
-//			return LoginController.tokens.get(token);
-//		}
-//
-////		 @PostMapping("/purchaseCoupon/{token}")
-////		 public ResponseEntity<Customer> purchaseCoupon (@PathVariable long couponId,
-////		 @PathVariableString token) throws Exception{
-////		 Customer customer = customerService.purchaseCoupon(couponId);
-////		 ResponseEntity<Customer> result = new
-////		 ResponseEntity<Customer>(customer,HttpStatus.OK);
-////		 return result;
-////		 }
-//		
-//		@PostMapping("/purchaseCoupon/{couponId}/{token}")
-//		public ResponseEntity<String> purchaseCoupon(@PathVariable long couponId, @PathVariable String token)
-//				throws Exception {
-//			Session session = exists(token);
-//			if (session == null) {
-//				throw new Exception("Something went wrong with the session !!");
-//			} else if (session != null) {
-//				session.setLastAccesed(System.currentTimeMillis());
-//				try {
-//					if (((CustomerServiceImpl) session.getFacade()).purchaseCoupon(couponId) != null) {
-//					}return new ResponseEntity<>("Customer purchaed coupon :  " + couponId, HttpStatus.OK);
-//				} catch (Exception e) {
-//					return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);
-//				}
-//			}
-//			return null;
-//		}
-//
-//		@GetMapping("/getAllCustomerCoupons/{customer_id}/{token}")
-//		public List<Coupon> getAllCustomerCoupons(@PathVariable long customer_id, @PathVariable String token)
-//				throws Exception {
-//			Session session = exists(token);
-//			if (session == null) {
-//				throw new Exception("Something went wrong with the session !!");
-//			} else if (session != null) {
-//				session.setLastAccesed(System.currentTimeMillis());
-//				try {
-//					return ((CustomerServiceImpl) session.getFacade()).getAllCustomerCoupons(customer_id);
-//				} catch (Exception e) {
-//					System.out.println(e.getMessage());
-//				}
-//			}
-//			return null;
-//		}
-//		
-//		@GetMapping("/getCouponsByCouponType/{couponType}/{token}")
-//		public List<Coupon> getCouponsByCouponType(@PathVariable CouponType couponType, @PathVariable String token)
-//				throws Exception {
-//			Session session = exists(token);
-//			if (session == null) {
-//				throw new Exception("Something went wrong with the session !!");
-//			} else if (session != null) {
-//				session.setLastAccesed(System.currentTimeMillis());
-//				try {
-//					return ((CustomerServiceImpl) session.getFacade()).getCouponsByCouponType(couponType);
-//				} catch (Exception e) {
-//					System.out.println(e.getMessage());
-//				}
-//			}
-//			return null;
-//		}
-//		
-//		@GetMapping("/getCouponsByPrice/{price}/{token}")
-//		public List<Coupon> getCouponsByPrice(@PathVariable double price, @PathVariable String token)
-//				throws Exception {
-//			Session session = exists(token);
-//			if (session == null) {
-//				throw new Exception("Something went wrong with the session !!");
-//			} else if (session != null) {
-//				session.setLastAccesed(System.currentTimeMillis());
-//				try {
-//					return ((CustomerServiceImpl) session.getFacade()).getCouponsByPrice(price);
-//				} catch (Exception e) {
-//					System.out.println(e.getMessage());
-//				}
-//			}
-//			return null;
-//		}
-//		
-//	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//@PostMapping("/purchaseCoupon/{couponId}/{token}")
-//public ResponseEntity<String> purchaseCoupon(@PathVariable long couponId, @PathVariable String token)
-//		throws Exception {
-//	Session session = exists(token);
-//	if (session == null) {
-//		throw new Exception("Something went wrong with the session !!");
-//	} else if (session != null) {
-//		session.setLastAccesed(System.currentTimeMillis());
-//		try {
-//			if (((CustomerServiceImpl) session.getFacade()).purchaseCoupon(couponId) != null) {
-//			}return new ResponseEntity<>("Customer purchaed coupon :  " + couponId, HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);
-//		}
-//	}
-//	return null;
-//}
-//
-//@GetMapping("/getAllCustomerCoupons/{customer_id}/{token}")
-//public List<Coupon> getAllCustomerCoupons(@PathVariable long customer_id, @PathVariable String token)
-//		throws Exception {
-//	Session session = exists(token);
-//	if (session == null) {
-//		throw new Exception("Something went wrong with the session !!");
-//	} else if (session != null) {
-//		session.setLastAccesed(System.currentTimeMillis());
-//		try {
-//			return ((CustomerServiceImpl) session.getFacade()).getAllCustomerCoupons(customer_id);
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//	}
-//	return null;
-//}
-//
-//@GetMapping("/getCouponsByCouponType/{couponType}/{token}")
-//public List<Coupon> getCouponsByCouponType(@PathVariable CouponType couponType, @PathVariable String token)
-//		throws Exception {
-//	Session session = exists(token);
-//	if (session == null) {
-//		throw new Exception("Something went wrong with the session !!");
-//	} else if (session != null) {
-//		session.setLastAccesed(System.currentTimeMillis());
-//		try {
-//			return ((CustomerServiceImpl) session.getFacade()).getCouponsByCouponType(couponType);
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//	}
-//	return null;
-//}
-//
-//@GetMapping("/getCouponsByPrice/{price}/{token}")
-//public List<Coupon> getCouponsByPrice(@PathVariable double price, @PathVariable String token)
-//		throws Exception {
-//	Session session = exists(token);
-//	if (session == null) {
-//		throw new Exception("Something went wrong with the session !!");
-//	} else if (session != null) {
-//		session.setLastAccesed(System.currentTimeMillis());
-//		try {
-//			return ((CustomerServiceImpl) session.getFacade()).getCouponsByPrice(price);
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//	}
-//	return null;
-//}
-//
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

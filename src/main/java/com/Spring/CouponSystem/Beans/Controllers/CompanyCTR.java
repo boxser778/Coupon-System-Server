@@ -45,7 +45,7 @@ public class CompanyCTR {
 	@Autowired
 	CompanyRepo companyRepo;
 
-//	http://localhost:8080/company/coupon/{companyId}
+//	http://localhost:8080/coupon-system/company/coupon/{companyId}
 //	{
 //	    "title": "adaddd333dad",
 //	    "amount": 1,
@@ -68,17 +68,17 @@ public class CompanyCTR {
 		}
 
 	}
-
-//	@PutMapping("/coupon/{id}")
-//	public ResponseEntity<?> updateCoupon(@PathVariable("id") int id, @RequestBody Coupon coupon) {
-//		try {
-//			companyService.updateCoupon(coupon);
-//		} catch (Exception e) {
-//			return new ResponseEntity<String>("Some problem", HttpStatus.BAD_REQUEST);
-//		}
-//		return new ResponseEntity<Coupon>(coupon, HttpStatus.OK);
-//	}
-
+//	http://localhost:8080/coupon-system/company/coupon/{companyId}
+	@PutMapping("/coupon/{id}")
+	public ResponseEntity<?> updateCoupon(@PathVariable("id") int id, @RequestBody Coupon coupon) {
+		try {
+			companyService.updateCoupon(coupon);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Some problem", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Coupon>(coupon, HttpStatus.OK);
+	}
+//	http://localhost:8080/coupon-system/company/coupon/{companyId}
 	@DeleteMapping("/coupon/{id}")
 	public ResponseEntity<?> removeCoupon(@PathParam("id") Coupon coupon) {
 		try {
@@ -88,39 +88,47 @@ public class CompanyCTR {
 		}
 		return new ResponseEntity<String>("Coupon Deleled!", HttpStatus.OK);
 	}
-
-	@GetMapping("/getAllCompanyCoupons/{company_id}")
-	public List<Coupon> getAllCompanyCoupons(@PathVariable int company_id) {
+//	http://localhost:8080/coupon-system/company/company/{companyId}
+	@GetMapping("/company/{id}")
+	public ResponseEntity<?> getCompany(@PathVariable("id") int id) {
+		if (companyService.findById(id) == null) {
+			return new ResponseEntity<String>("This Id Not Exist!", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Company>(companyService.findById(id), HttpStatus.OK);
+	}
+//	http://localhost:8080/coupon-system/company/coupon/{companyId}
+	@GetMapping("/coupon/{companyid}")
+	public List<Coupon> getAllCompanyCoupons(@PathVariable int companyid) {
 		try {
-			return companyService.getAllCompanyCoupons(company_id);
+			return companyService.getAllCompanyCoupons(companyid);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return null;
 	}
 
-	@GetMapping("/couponByDate/{date}")
-	public ResponseEntity<List<Coupon>> getCouponByDate(@PathVariable("date") String endDate) {
-		Date asDate = new Date(Long.parseLong(endDate));
-		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByEndDate(asDate), HttpStatus.OK);
-	}
-
-	@GetMapping("/couponByPrice/{price}")
-	public ResponseEntity<?> getCouponByDate(@PathVariable("price") double price) {
-		if (companyService.getCouponsByPrice(price) == null) {
-			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByPrice(price), HttpStatus.OK);
-
-	}
-
-	@GetMapping("/couponByType/{type}")
-	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type) {
-		if (companyService.getCouponsByType(type) == null) {
-			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByType(type), HttpStatus.OK);
-
-	}
+//	@GetMapping("/couponbyenddate/{date}")
+//	public ResponseEntity<List<Coupon>> getCouponByDate(@PathVariable("date") String endDate) {
+//		Date asDate = new Date(Long.parseLong(endDate));
+//		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByEndDate(asDate), HttpStatus.OK);
+//	}
+//
+//	@GetMapping("/couponbyprice/{price}")
+//	public ResponseEntity<?> getCouponByDate(@PathVariable("price") double price) {
+//		if (companyService.getCouponsByPrice(price) == null) {
+//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+//		}
+//		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByPrice(price), HttpStatus.OK);
+//
+//	}
+//
+//	@GetMapping("/couponbytype/{type}")
+//	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type) {
+//		if (companyService.getCouponsByType(type) == null) {
+//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+//		}
+//		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByType(type), HttpStatus.OK);
+//
+//	}
 
 }

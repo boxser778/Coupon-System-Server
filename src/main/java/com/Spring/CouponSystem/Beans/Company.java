@@ -36,7 +36,7 @@ public class Company {
 	private String email;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)
-	@JsonManagedReference
+	@JsonManagedReference("company")
 	private List<Coupon> coupons = new ArrayList<>(0);
 
 	public Company() {
