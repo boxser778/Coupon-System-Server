@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.Spring.CouponSystem.Beans.Coupon;
+import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 
 @Repository
@@ -21,15 +22,38 @@ public interface CouponRepo extends JpaRepository<Coupon, Integer> {
 
 	@Query("Select c from Coupon c where c.type = :type")
 	List<Coupon> findByType(CouponType type);
-	
+
 	@Transactional
 	@Modifying
 	@Query("DELETE FROM Coupon c WHERE c.id = :id")
 	void removeCoupon(@Param("id") int id);
 
 	public List<Coupon> findByEndDate(Date endDate);
-	
+
 	@Query("Select c from Coupon c where c.title = :title")
 	Coupon findByTitle(String title);
-	
+
+	@Query("SELECT c from Company as company join company.coupons As c WHERE company.id=:id AND c.type=:type")
+	public List<Coupon> findCompanyCouponByType(int id, CouponType type);
+
+	@Query("SELECT c from Company as company join company.coupons As c WHERE company.id=:id AND c.price=:price")
+	public List<Coupon> findCompanyCouponByPrice(int id, double price);
+
+	@Query("SELECT c from Company as company join company.coupons As c WHERE company.id=:id AND c.endDate=:endDate")
+	public List<Coupon> findCompanyCouponByEndDate(int id, Date endDate);
+
+	@Transactional
+	@Modifying(clearAutomatically = true, flushAutomatically = true)
+//	@Query("DELETE From Coupon c WHERE customer.id = ?1")
+	@Query("DELETE from Coupon WHERE customer IN (SELECT customer FROM Customer WHERE customer.id=:id)")
+	void deleteCustomerCoupons(Customer customer);
+
+	@Query("SELECT c from Customer as customer join customer.coupons As c WHERE customer.id=:id")
+	public List<Coupon> findCustomerCoupon(int id);
+
+	@Query("SELECT c from Customer as customer join customer.coupons As c WHERE customer.id=:id AND c.type=:type")
+	public List<Coupon> findCustomerCouponByType(int id, CouponType type);
+
+	@Query("SELECT c from Customer as customer join customer.coupons As c WHERE customer.id=:id AND c.price=:price")
+	public List<Coupon> findCustomerCouponByPrice(int id, double price);
 }

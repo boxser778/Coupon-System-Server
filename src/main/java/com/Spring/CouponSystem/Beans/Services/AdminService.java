@@ -2,6 +2,9 @@ package com.Spring.CouponSystem.Beans.Services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +36,7 @@ public class AdminService implements CouponClient {
 	CustomerRepo customerRepo;
 	@Autowired
 	CouponRepo couponRepo;
-	
+
 	public AdminService() {
 	}
 
@@ -88,15 +91,15 @@ public class AdminService implements CouponClient {
 		return customerRepo.save(customer);
 
 	}
-	
+
 	public Customer updateCustomer(Customer customer) {
 		Customer currentCustomer = customerRepo.findById(customer.getId());
 		currentCustomer.setCustomerName(customer.getCustomerName());
 		currentCustomer.setCustomerPassword(customer.getCustomerPassword());
 		return customerRepo.saveAndFlush(currentCustomer);
-		
+
 	}
-	
+
 	public boolean deleteCustomer(Customer customer) {
 		try {
 			customerRepo.delete(customer);
@@ -104,6 +107,7 @@ public class AdminService implements CouponClient {
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
+
 	}
 
 	public List<Customer> findAllCustomers() {
@@ -121,7 +125,7 @@ public class AdminService implements CouponClient {
 //	}
 
 	public Coupon createCoupon(Coupon coupon) {
-			coupon.setid(0);
+		coupon.setid(0);
 		return couponRepo.save(coupon);
 	}
 
@@ -134,19 +138,19 @@ public class AdminService implements CouponClient {
 //		
 //	}
 
-	public boolean deleteCoupon(Coupon coupon) {
-		try {
-			couponRepo.delete(coupon);
-			return true;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
-	}
+//	public boolean deleteCoupon(Coupon coupon) {
+//		try {
+//			couponRepo.delete(coupon);
+//			return true;
+//		} catch (IllegalArgumentException e) {
+//			return false;
+//		}
+//	}
 
-	public boolean isCouponTitleExist(String title) {
-		Coupon coup = couponRepo.findByTitle(title);
-		return coup == null;
-	}
+//	public boolean isCouponTitleExist(String title) {
+//		Coupon coup = couponRepo.findByTitle(title);
+//		return coup == null;
+//	}
 
 //	public Coupon updateCoupon(long id, Coupon c) {
 //		try {
@@ -173,5 +177,5 @@ public class AdminService implements CouponClient {
 		// TODO Auto-generated method stub
 		return new AdminService();
 	}
-	
+
 }

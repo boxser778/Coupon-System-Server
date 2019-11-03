@@ -2,6 +2,7 @@ package com.Spring.CouponSystem.Beans.Controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
@@ -24,6 +25,7 @@ import com.Spring.CouponSystem.Session;
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
+import com.Spring.CouponSystem.Beans.Repository.CustomerRepo;
 import com.Spring.CouponSystem.Beans.Services.AdminService;
 import com.Spring.CouponSystem.Login.ClientType;
 import com.Spring.CouponSystem.Login.CouponClient;
@@ -65,15 +67,12 @@ public class AdminCTR {
 			session.setLastAccesed(System.currentTimeMillis());
 		}
 		try {
-			return new ResponseEntity<Company> (adminService.findCompany(id),HttpStatus.OK) ;
-				 
-			
+			return new ResponseEntity<Company>(adminService.findCompany(id), HttpStatus.OK);
+
 		} catch (Exception e) {
 			return new ResponseEntity<String>("This Id Not Exist!", HttpStatus.BAD_REQUEST);
 		}
-	
 
-		
 	}
 
 	// http://localhost:8080/coupon-system/admin/customer/{id}
@@ -108,7 +107,7 @@ public class AdminCTR {
 
 //		http://localhost:8080/coupon-system/admin/company/{id}
 	@DeleteMapping("/company/{id}")
-	public ResponseEntity<?> removeCompany(@PathParam("id") Company company) {
+	public ResponseEntity<?> removeCompany(@PathVariable("id") Company company) {
 		try {
 			adminService.deleteCompany(company);
 		} catch (Exception e) {
@@ -118,16 +117,16 @@ public class AdminCTR {
 	}
 
 //		http://localhost:8080/coupon-system/admin/customer/{id}   
-//	@DeleteMapping("/customer/{id}")
-//	public ResponseEntity<?> removeCustomer(@PathParam("id") Customer customer) {
-//		try {
-//			adminService.deleteCustomer(customer);
-//		} catch (Exception e) {
-//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-//		}
-//
-//		return new ResponseEntity<String>("Customer Deleled!", HttpStatus.OK);
-//	} "" DELETE CUSTOMER AND ALL HIS COUPONS NEED TO FIX ITS DELETE THE COUPON IT SELF  ""
+	@DeleteMapping("/customer")
+	public ResponseEntity<?> removeCustomer(@RequestBody Customer customer) {
+		try {
+			adminService.deleteCustomer(customer);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<String>("Customer Deleled!", HttpStatus.OK);
+	}
 
 //	http://localhost:8080/coupon-system/admin/company/{id} 
 	@PutMapping("/company/{id}")

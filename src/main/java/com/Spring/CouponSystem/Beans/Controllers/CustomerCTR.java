@@ -69,23 +69,23 @@ public class CustomerCTR {
 		return null;
 	}
 
-//	@GetMapping("/couponbytype/{type}")
-//	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type) {
-//		if (customerService.getCouponsByType(type) == null) {
-//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-//		}
-//		return new ResponseEntity<List<Coupon>>(customerService.getCouponsByType(type), HttpStatus.OK);
-//
-//	}
+	@GetMapping("/couponbytype/{customerid}/{type}")
+	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type,@PathVariable("customerid") int customerid) {
+		if (customerService.getCouponsByType(customerid,type) == null) {
+			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Coupon>>(customerService.getCouponsByType(customerid,type), HttpStatus.OK);
 
-//	@GetMapping("/couponbyprice/{price}")
-//	public ResponseEntity<?> getCouponsByPrice(@PathVariable("price") double price) throws Exception {
-//		if (customerService.findCustomerCouponsByPrice(price) == null) {
-//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-//		}
-//		return new ResponseEntity<List<Coupon>>(customerService.findCustomerCouponsByPrice(price), HttpStatus.OK);
-//
-//	}
+	}
+
+	@GetMapping("/couponbyprice/{customerid}/{price}")
+	public ResponseEntity<?> getCouponsByPrice(@PathVariable("price") double price,@PathVariable("customerid") int customerid) {
+		if (customerService.getCouponsByPrice(customerid, price) == null) {
+			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Coupon>>(customerService.getCouponsByPrice(customerid, price), HttpStatus.OK);
+
+	}
 
 }
 

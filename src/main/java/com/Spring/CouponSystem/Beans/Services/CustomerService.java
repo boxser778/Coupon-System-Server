@@ -121,13 +121,13 @@ public class CustomerService implements CouponClient {
 		}
 	}
 
-//	public List<Coupon> getCouponsByType(CouponType type) {
-//		return customerRepo.findCouponsByType(type);
-//	}
-//
-//	public List<Coupon> findCustomerCouponsByPrice(double price) {
-//		return couponRepo.findCustomerCouponsByPrice(price);
-//	}
+	public List<Coupon> getCouponsByType(int customerid, CouponType type) {
+		return couponRepo.findCustomerCouponByType(customerid, type);
+	}
+
+	public List<Coupon> getCouponsByPrice(int customerid, double price) {
+		return couponRepo.findCustomerCouponByPrice(customerid, price);
+	}
 
 	public Customer saveCustomer(Customer customer) {
 		return customerRepo.save(customer);

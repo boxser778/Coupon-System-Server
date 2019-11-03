@@ -20,6 +20,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -72,6 +75,7 @@ public class Coupon {
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	@JsonBackReference("customer")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Customer customer;
 
 	public Coupon() {

@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
@@ -31,6 +33,5 @@ public interface CustomerRepo extends JpaRepository<Customer, Long> {
 
 	@Query("select c from Customer c where c.customerName = :name And c.customerPassword = :password")
 	Customer findByCustomerNameAndPassword(String name, String password);
-
 
 }

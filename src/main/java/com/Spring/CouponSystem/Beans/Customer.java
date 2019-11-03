@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -38,7 +40,7 @@ public class Customer {
 	@Basic(optional = false)
 	private String customerPassword;
 
-	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "customer", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonManagedReference("customer")
 	private List<Coupon> coupons = new ArrayList<>(0);
 

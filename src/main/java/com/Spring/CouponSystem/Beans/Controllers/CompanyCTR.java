@@ -107,28 +107,28 @@ public class CompanyCTR {
 		return null;
 	}
 
-//	@GetMapping("/couponbyenddate/{date}")
-//	public ResponseEntity<List<Coupon>> getCouponByDate(@PathVariable("date") String endDate) {
-//		Date asDate = new Date(Long.parseLong(endDate));
-//		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByEndDate(asDate), HttpStatus.OK);
-//	}
-//
-//	@GetMapping("/couponbyprice/{price}")
-//	public ResponseEntity<?> getCouponByDate(@PathVariable("price") double price) {
-//		if (companyService.getCouponsByPrice(price) == null) {
-//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-//		}
-//		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByPrice(price), HttpStatus.OK);
-//
-//	}
-//
-//	@GetMapping("/couponbytype/{type}")
-//	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type) {
-//		if (companyService.getCouponsByType(type) == null) {
-//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-//		}
-//		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByType(type), HttpStatus.OK);
-//
-//	}
+	@GetMapping("/couponbyenddate/{companyid}/{date}")
+	public ResponseEntity<List<Coupon>> getCouponsByEndDate(@PathVariable("date") String endDate,@PathVariable("companyid") int companyid) {
+		Date asDate = new Date(Long.parseLong(endDate));
+		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByEndDate(companyid,asDate), HttpStatus.OK);
+	}
+
+	@GetMapping("/couponbyprice/{companyid}/{price}")
+	public ResponseEntity<?> getCouponByPrice(@PathVariable("price") double price,@PathVariable("companyid") int companyid) {
+		if (companyService.getCouponsByPrice(companyid, price) == null) {
+			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByPrice(companyid, price), HttpStatus.OK);
+
+	}
+
+	@GetMapping("/couponbytype/{companyid}/{type}")
+	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type,@PathVariable("companyid") int companyid) {
+		if (companyService.getCouponsByType(companyid, type) == null) {
+			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByType(companyid, type), HttpStatus.OK);
+
+	}
 
 }

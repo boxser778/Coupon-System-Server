@@ -117,17 +117,17 @@ public class CompanyService implements CouponClient {
 		return couponRepo.findAll();
 	}
 
-//	public List<Coupon> getCouponsByEndDate(Date endDate) {
-//	return companyRepo.findCouponsByDate(endDate);
-//}
-//
-//public List<Coupon> getCouponsByPrice(double price) {
-//	return companyRepo.findCouponsByPrice(price);
-//}
-//
-//public List<Coupon> getCouponsByType(CouponType type) {
-//	return companyRepo.findCouponsByType(type);
-//}
+	public List<Coupon> getCouponsByEndDate(int companyid,Date endDate) {
+	return couponRepo.findCompanyCouponByEndDate(companyid, endDate);
+}
+
+public List<Coupon> getCouponsByPrice(int companyid,double price) {
+	return couponRepo.findCompanyCouponByPrice(companyid, price);
+}
+
+public List<Coupon> getCouponsByType(int companyid,CouponType type) {
+	return couponRepo.findCompanyCouponByType(companyid, type);
+}
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
