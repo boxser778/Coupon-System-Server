@@ -117,8 +117,8 @@ public class AdminCTR {
 	}
 
 //		http://localhost:8080/coupon-system/admin/customer/{id}   
-	@DeleteMapping("/customer")
-	public ResponseEntity<?> removeCustomer(@RequestBody Customer customer) {
+	@DeleteMapping("/customer/{id}")
+	public ResponseEntity<?> removeCustomer(@PathVariable("id") Customer customer) {
 		try {
 			adminService.deleteCustomer(customer);
 		} catch (Exception e) {
@@ -127,7 +127,7 @@ public class AdminCTR {
 
 		return new ResponseEntity<String>("Customer Deleled!", HttpStatus.OK);
 	}
-
+	
 //	http://localhost:8080/coupon-system/admin/company/{id} 
 	@PutMapping("/company/{id}")
 	public ResponseEntity<Company> updateCompany(@PathVariable("id") int id, @RequestBody Company company) {

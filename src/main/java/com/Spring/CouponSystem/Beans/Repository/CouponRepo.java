@@ -3,6 +3,12 @@ package com.Spring.CouponSystem.Beans.Repository;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,11 +29,6 @@ public interface CouponRepo extends JpaRepository<Coupon, Integer> {
 	@Query("Select c from Coupon c where c.type = :type")
 	List<Coupon> findByType(CouponType type);
 
-	@Transactional
-	@Modifying
-	@Query("DELETE FROM Coupon c WHERE c.id = :id")
-	void removeCoupon(@Param("id") int id);
-
 	public List<Coupon> findByEndDate(Date endDate);
 
 	@Query("Select c from Coupon c where c.title = :title")
@@ -42,12 +43,6 @@ public interface CouponRepo extends JpaRepository<Coupon, Integer> {
 	@Query("SELECT c from Company as company join company.coupons As c WHERE company.id=:id AND c.endDate=:endDate")
 	public List<Coupon> findCompanyCouponByEndDate(int id, Date endDate);
 
-	@Transactional
-	@Modifying(clearAutomatically = true, flushAutomatically = true)
-//	@Query("DELETE From Coupon c WHERE customer.id = ?1")
-	@Query("DELETE from Coupon WHERE customer IN (SELECT customer FROM Customer WHERE customer.id=:id)")
-	void deleteCustomerCoupons(Customer customer);
-
 	@Query("SELECT c from Customer as customer join customer.coupons As c WHERE customer.id=:id")
 	public List<Coupon> findCustomerCoupon(int id);
 
@@ -56,4 +51,5 @@ public interface CouponRepo extends JpaRepository<Coupon, Integer> {
 
 	@Query("SELECT c from Customer as customer join customer.coupons As c WHERE customer.id=:id AND c.price=:price")
 	public List<Coupon> findCustomerCouponByPrice(int id, double price);
+
 }

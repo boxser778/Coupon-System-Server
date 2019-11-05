@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -72,11 +73,19 @@ public class Coupon {
 	@JsonBackReference("company")
 	private Company company;
 
-	@ManyToOne
-	@JoinColumn(name = "customer_id")
-	@JsonBackReference("customer")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Customer customer;
+//	@ManyToOne
+////	@JoinColumn(name = "customer_id")
+//	@JoinTable(name = "customer_coupon", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "coupon_id"))
+//	@JsonBackReference("customer")
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private Customer customer;
+
+	@ManyToMany
+	@JoinTable(
+			  name = "customer_coupon", 
+			  joinColumns = @JoinColumn(name = "customer_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "coupon_id"))
+	List<Customer> customers;
 
 	public Coupon() {
 
@@ -177,12 +186,20 @@ public class Coupon {
 		this.company = company;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+//	public Customer getCustomer() {
+//		return customer;
+//	}
+//
+//	public void setCustomer(Customer customer) {
+//		this.customer = customer;
+//	}
+
+	public List<Customer> getCustomers() {
+		return customers;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setCustomers(List<Customer> customers) {
+		this.customers = customers;
 	}
 
 	@Override

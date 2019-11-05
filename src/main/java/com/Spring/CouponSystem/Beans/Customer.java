@@ -40,8 +40,15 @@ public class Customer {
 	@Basic(optional = false)
 	private String customerPassword;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true, fetch = FetchType.LAZY)
-	@JsonManagedReference("customer")
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true, fetch = FetchType.LAZY)
+//	@JsonManagedReference("customer")
+//	private List<Coupon> coupons = new ArrayList<>(0);
+	
+	@ManyToMany
+	@JoinTable(
+	  name = "customer_coupon", 
+	  joinColumns = @JoinColumn(name = "coupon_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "customer_id"))
 	private List<Coupon> coupons = new ArrayList<>(0);
 
 	public Customer() {

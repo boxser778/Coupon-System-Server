@@ -89,7 +89,7 @@ public class CustomerService implements CouponClient {
 	public Customer purchaseCoupon(Coupon coupon, int customerId) throws Exception {
 		if (checkIfCustomerExists(customerId)) {
 			Coupon getCouponById = couponRepo.findById(coupon.getid());
-			getCouponById.setCustomer(customerRepo.findById(customerId));
+			getCouponById.setCustomers(customerRepo.findAll());
 //			if (checkIfCustomerCouponExists(getCouponById)) {
 //				throw new Exception("YOU GOT THIS COUPON ALLREADY");
 //			}

@@ -59,9 +59,9 @@ public class CompanyCTR {
 
 	@PostMapping(value = "/coupon/{companyId}")
 	@ResponseBody
-	public ResponseEntity<String> createCoupon(@RequestBody Coupon coupon, @PathVariable("companyId") int id) {
+	public ResponseEntity<String> createCoupon(@RequestBody Coupon coupon, @PathVariable("companyId") int companyId) {
 		try {
-			companyService.createCoupon(coupon, id);
+			companyService.createCoupon(coupon, companyId);
 			return new ResponseEntity<>("coupon created", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);

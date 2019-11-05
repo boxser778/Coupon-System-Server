@@ -1,17 +1,12 @@
 package com.Spring.CouponSystem.Beans.Services;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.Spring.CouponSystem.Beans.Company;
-import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Repository.CompanyRepo;
 import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
@@ -102,75 +97,18 @@ public class AdminService implements CouponClient {
 
 	public boolean deleteCustomer(Customer customer) {
 		try {
+//			couponRepo.deleteById(customer.getId());
 			customerRepo.delete(customer);
+//			couponRepo.deleteById(customer.getId());
 			return true;
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
-
 	}
 
 	public List<Customer> findAllCustomers() {
 		return customerRepo.findAll();
 	}
-
-	// @@@@@@@@@@@@@@@@@@@ Coupon Options @@@@@@@@@@@@@@@@@@@
-
-	public List<Coupon> findAllCoupons() {
-		return couponRepo.findAll();
-	}
-
-//	public Coupon findCoupon(int id) {
-//		return couponRepo.findById(id);
-//	}
-
-	public Coupon createCoupon(Coupon coupon) {
-		coupon.setid(0);
-		return couponRepo.save(coupon);
-	}
-
-//	public Coupon updateCoupon(Coupon coupon) {
-//		
-//		Coupon currentCoupon = couponRepo.findById(coupon.getid());
-//		currentCoupon.setEndDate(coupon.getEndDate());
-//		currentCoupon.setPrice(coupon.getPrice());
-//		return couponRepo.saveAndFlush(currentCoupon);
-//		
-//	}
-
-//	public boolean deleteCoupon(Coupon coupon) {
-//		try {
-//			couponRepo.delete(coupon);
-//			return true;
-//		} catch (IllegalArgumentException e) {
-//			return false;
-//		}
-//	}
-
-//	public boolean isCouponTitleExist(String title) {
-//		Coupon coup = couponRepo.findByTitle(title);
-//		return coup == null;
-//	}
-
-//	public Coupon updateCoupon(long id, Coupon c) {
-//		try {
-//			couponRepo.updateCoupon(id, c);
-//			return true;
-//		}catch (IllegalArgumentException e) {
-//			return false;
-//		}
-
-//		return couponRepo.updateCoupon(id, c);
-
-//	}
-
-//	public Coupon updateCoupon(long id,Coupon coupon) {
-//		if (couponRepo.findById(coupon.getId()) != null) {
-//			couponRepo.save(coupon);
-//			return coupon;
-//		}
-//		return null;
-//	}
 
 	@Override
 	public CouponClient login(String name, String password, ClientType clientType) {

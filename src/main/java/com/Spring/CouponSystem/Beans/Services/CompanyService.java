@@ -78,9 +78,9 @@ public class CompanyService implements CouponClient {
 
 	}
 
-	public boolean deleteCoupon(Coupon coupon, int companyId) {
+	public boolean deleteCoupon(Coupon coupon) {
 		if (true) {
-			couponRepo.removeCoupon(coupon.getid());
+			couponRepo.delete(coupon);
 		}
 		return false;
 	}
@@ -104,14 +104,14 @@ public class CompanyService implements CouponClient {
 		this.company = company;
 	}
 
-	public boolean deleteCoupon(Coupon coupon) {
-		try {
-			couponRepo.delete(coupon);
-			return true;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
-	}
+//	public boolean deleteCoupon(Coupon coupon) {
+//		try {
+//			couponRepo.delete(coupon);
+//			return true;
+//		} catch (IllegalArgumentException e) {
+//			return false;
+//		}
+//	}
 
 	public List<Coupon> findAllCoupons() {
 		return couponRepo.findAll();
