@@ -95,11 +95,10 @@ public class AdminService implements CouponClient {
 
 	}
 
-	public boolean deleteCustomer(Customer customer) {
+	public boolean deleteCustomer(int customerId) {
 		try {
-//			couponRepo.deleteById(customer.getId());
-			customerRepo.delete(customer);
-//			couponRepo.deleteById(customer.getId());
+			Customer customertmp = customerRepo.findById(customerId);
+			customerRepo.delete(customertmp);
 			return true;
 		} catch (IllegalArgumentException e) {
 			return false;

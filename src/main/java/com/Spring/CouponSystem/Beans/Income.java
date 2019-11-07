@@ -2,31 +2,43 @@ package com.Spring.CouponSystem.Beans;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.Spring.CouponSystem.Beans.Enum.IncomeType;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
+@Table(name = "income")
 public class Income {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "incomeId")
 	private int id;
 
+	@Basic(optional = false)
+	@Column(nullable = false, name = "clientId")
+	private long clientId;
+
 	@Column(nullable = false)
+	@Basic(optional = false)
 	private String name;
 
 	@Column(nullable = false)
-//	@JsonFormat(pattern="dd-MM-yyyy")
-//	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@Basic(optional = false)
 	private Date date;
 
 	@Column(nullable = false)
@@ -34,14 +46,23 @@ public class Income {
 	private IncomeType description;
 
 	@Column(nullable = false)
-	private double amount;
+	@Basic(optional = false)
+	private double price;
 
-	public int getid() {
+	public int getId() {
 		return id;
 	}
 
-	public void setid(int id) {
+	public void setId(int id) {
 		this.id = id;
+	}
+
+	public long getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(long clientId) {
+		this.clientId = clientId;
 	}
 
 	public String getName() {
@@ -68,17 +89,17 @@ public class Income {
 		this.description = description;
 	}
 
-	public double getAmount() {
-		return amount;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	@Override
 	public String toString() {
-		return "Income [id=" + id + ", name=" + name + ", date=" + date + ", description=" + description + ", amount="
-				+ amount + "]";
+		return "Income [id=" + id + ", name=" + name + ", date=" + date + ", description=" + description + ", price="
+				+ price + "]";
 	}
 }

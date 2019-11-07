@@ -58,14 +58,14 @@ public class AdminCTR {
 	}
 
 	// http://localhost:8080/coupon-system/admin/company/{id}
-	@GetMapping("/company/{id}/{token}")
-	public ResponseEntity<?> getCompany(@PathVariable("id") int id, @PathVariable String token) throws Exception {
-		Session session = exists(token);
-		if (session == null) {
-			throw new Exception("Something went wrong with the session !!");
-		} else if (session != null) {
-			session.setLastAccesed(System.currentTimeMillis());
-		}
+	@GetMapping("/company/{id}")
+	public ResponseEntity<?> getCompany(@PathVariable("id") int id) throws Exception {
+//		Session session = exists(token);
+//		if (session == null) {
+//			throw new Exception("Something went wrong with the session !!");
+//		} else if (session != null) {
+//			session.setLastAccesed(System.currentTimeMillis());
+//		}
 		try {
 			return new ResponseEntity<Company>(adminService.findCompany(id), HttpStatus.OK);
 
@@ -113,19 +113,19 @@ public class AdminCTR {
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<String>("Company Deleled!", HttpStatus.OK);
+		return new ResponseEntity<String>("Company Deleted!", HttpStatus.OK);
 	}
 
 //		http://localhost:8080/coupon-system/admin/customer/{id}   
 	@DeleteMapping("/customer/{id}")
-	public ResponseEntity<?> removeCustomer(@PathVariable("id") Customer customer) {
+	public ResponseEntity<?> removeCustomer(@PathVariable("id") int customerId) {
 		try {
-			adminService.deleteCustomer(customer);
+			adminService.deleteCustomer(customerId);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<String>("Customer Deleled!", HttpStatus.OK);
+		return new ResponseEntity<String>("Customer Deleted!", HttpStatus.OK);
 	}
 	
 //	http://localhost:8080/coupon-system/admin/company/{id} 

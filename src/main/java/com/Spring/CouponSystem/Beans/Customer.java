@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -44,11 +45,12 @@ public class Customer {
 //	@JsonManagedReference("customer")
 //	private List<Coupon> coupons = new ArrayList<>(0);
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 	  name = "customer_coupon", 
 	  joinColumns = @JoinColumn(name = "coupon_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "customer_id"))
+	@JsonIgnore
 	private List<Coupon> coupons = new ArrayList<>(0);
 
 	public Customer() {

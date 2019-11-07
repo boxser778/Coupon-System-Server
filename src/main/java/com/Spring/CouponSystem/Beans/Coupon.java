@@ -27,9 +27,11 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "coupon")
+@JsonIgnoreProperties({ "company", "customers" })
 public class Coupon {
 
 	@Id
@@ -68,7 +70,7 @@ public class Coupon {
 	@Basic(optional = false)
 	private String picture;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_id")
 	@JsonBackReference("company")
 	private Company company;
@@ -80,11 +82,8 @@ public class Coupon {
 //	@OnDelete(action = OnDeleteAction.CASCADE)
 //	private Customer customer;
 
-	@ManyToMany
-	@JoinTable(
-			  name = "customer_coupon", 
-			  joinColumns = @JoinColumn(name = "customer_id"), 
-			  inverseJoinColumns = @JoinColumn(name = "coupon_id"))
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "customer_coupon", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "coupon_id"))
 	List<Customer> customers;
 
 	public Coupon() {
@@ -185,14 +184,6 @@ public class Coupon {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-
-//	public Customer getCustomer() {
-//		return customer;
-//	}
-//
-//	public void setCustomer(Customer customer) {
-//		this.customer = customer;
-//	}
 
 	public List<Customer> getCustomers() {
 		return customers;
