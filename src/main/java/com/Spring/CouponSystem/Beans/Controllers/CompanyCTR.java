@@ -49,7 +49,6 @@ public class CompanyCTR {
 //	{
 //	    "title": "adaddd333dad",
 //	    "amount": 1,
-//	    "startDate": 1569888000000,
 //	    "endDate": 1571097600000,
 //	    "type": "CLOTHING",
 //	    "msg": "aaa",

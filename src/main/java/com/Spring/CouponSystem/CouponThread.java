@@ -25,7 +25,7 @@ public class CouponThread {
 	private boolean running = true;
 
 	public void removeExpiredCoupons(Date date) {
-		couponRepo.deleteAll(couponRepo.findByEndDate(date));
+		couponRepo.deleteAll(couponRepo.findByEndDateBefore(date));
 	}
 
 
@@ -37,7 +37,7 @@ public class CouponThread {
 					removeExpiredCoupons(new Date(System.currentTimeMillis()));
 					try {
 						Thread.sleep(1000 * 60 * 60 * 24);
-//						Thread.sleep(2000);
+//						Thread.sleep(20000);
 					} catch (InterruptedException e) {
 						System.out.println("Erorr " + e.getMessage());
 					}

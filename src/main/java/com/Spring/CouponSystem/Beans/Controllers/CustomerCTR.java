@@ -80,7 +80,7 @@ public class CustomerCTR {
 
 	@GetMapping("/couponbyprice/{customerid}/{price}")
 	public ResponseEntity<?> getCouponsByPrice(@PathVariable("price") double price,@PathVariable("customerid") int customerid) {
-		if (customerService.getCouponsByPrice(customerid, price) == null) {
+		if (customerService.getCouponsByPrice(customerid,price) == null) {
 			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<List<Coupon>>(customerService.getCouponsByPrice(customerid, price), HttpStatus.OK);

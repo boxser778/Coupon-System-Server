@@ -57,15 +57,18 @@ public class AdminCTR {
 		return new ResponseEntity<List<Customer>>(adminService.findAllCustomers(), HttpStatus.OK);
 	}
 
-	// http://localhost:8080/coupon-system/admin/company/{id}
-	@GetMapping("/company/{id}")
-	public ResponseEntity<?> getCompany(@PathVariable("id") int id) throws Exception {
+//	@GetMapping("/company/{id}/{token}")
+//	public ResponseEntity<?> getCompany(@PathVariable("id") int id,@PathVariable("token") String token) throws Exception {
 //		Session session = exists(token);
 //		if (session == null) {
 //			throw new Exception("Something went wrong with the session !!");
 //		} else if (session != null) {
 //			session.setLastAccesed(System.currentTimeMillis());
 //		}
+
+	// http://localhost:8080/coupon-system/admin/company/{id}
+	@GetMapping("/company/{id}")
+	public ResponseEntity<?> getCompany(@PathVariable("id") int id){
 		try {
 			return new ResponseEntity<Company>(adminService.findCompany(id), HttpStatus.OK);
 
@@ -87,7 +90,7 @@ public class AdminCTR {
 	// http://localhost:8080/coupon-system/admin/company
 	// {"password":"shmuel","email":"zzz","comp_Name":"wava"}
 	@PostMapping("/company")
-	public ResponseEntity<?> newCompany(@RequestBody Company c) {
+	public ResponseEntity<?> newCompany(@RequestBody Company c) throws Exception {
 		if (adminService.isCompNameExists(c.getComp_Name()) == false) {
 			return new ResponseEntity<String>("name Exist", HttpStatus.BAD_REQUEST);
 		} else {
@@ -127,7 +130,7 @@ public class AdminCTR {
 
 		return new ResponseEntity<String>("Customer Deleted!", HttpStatus.OK);
 	}
-	
+
 //	http://localhost:8080/coupon-system/admin/company/{id} 
 	@PutMapping("/company/{id}")
 	public ResponseEntity<Company> updateCompany(@PathVariable("id") int id, @RequestBody Company company) {

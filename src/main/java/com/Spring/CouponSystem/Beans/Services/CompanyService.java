@@ -58,6 +58,9 @@ public class CompanyService implements CouponClient {
 		if (checkIfTitleAlreadyExists(coupon.getTitle()) == false) {
 			coupon.setCompany(companyRepo.findById(companyId));
 			if (checkIfCompanyExists(companyId)) {
+				LocalDate couponCreatingDate = LocalDate.now();
+				Date couponDate = java.sql.Date.valueOf(couponCreatingDate);
+				coupon.setStartDate(couponDate);
 				couponRepo.save(coupon);
 
 				Income income = new Income();
@@ -91,6 +94,7 @@ public class CompanyService implements CouponClient {
 		income.setDescription(IncomeType.COMPANY_UPDATE_COUPON);
 		LocalDate localDate = LocalDate.now();
 		Date date = java.sql.Date.valueOf(localDate);
+		income.setDate(date);
 		income.setName("Company " + company.getComp_Name());
 		incomeRepo.save(income);
 

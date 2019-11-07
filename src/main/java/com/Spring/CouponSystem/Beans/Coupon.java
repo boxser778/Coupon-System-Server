@@ -23,6 +23,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -52,6 +54,7 @@ public class Coupon {
 
 	@Column(nullable = false)
 	@Basic(optional = false)
+	@JsonFormat(pattern="dd-MM-yyyy")
 	private Date endDate;
 
 	@Column(nullable = false)
@@ -192,6 +195,7 @@ public class Coupon {
 	public void setCustomers(List<Customer> customers) {
 		this.customers = customers;
 	}
+	
 
 	@Override
 	public String toString() {

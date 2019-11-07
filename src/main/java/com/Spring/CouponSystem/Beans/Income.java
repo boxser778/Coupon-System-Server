@@ -17,8 +17,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.Spring.CouponSystem.Beans.Enum.IncomeType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "income")
@@ -39,6 +42,8 @@ public class Income {
 
 	@Column(nullable = false)
 	@Basic(optional = false)
+//	@JsonFormat(pattern="dd-MM-yyyy")
+//	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private Date date;
 
 	@Column(nullable = false)
