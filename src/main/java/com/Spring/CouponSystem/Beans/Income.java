@@ -1,6 +1,7 @@
 package com.Spring.CouponSystem.Beans;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -28,12 +31,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Income {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "incomeId")
 	private int id;
 
 	@Basic(optional = false)
-	@Column(nullable = false, name = "clientId")
+	@Column(name = "clientId")
 	private long clientId;
 
 	@Column(nullable = false)

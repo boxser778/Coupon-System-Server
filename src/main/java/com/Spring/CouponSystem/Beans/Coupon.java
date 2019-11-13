@@ -78,17 +78,11 @@ public class Coupon {
 	@JsonBackReference("company")
 	private Company company;
 
-//	@ManyToOne
-////	@JoinColumn(name = "customer_id")
-//	@JoinTable(name = "customer_coupon", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "coupon_id"))
-//	@JsonBackReference("customer")
-//	@OnDelete(action = OnDeleteAction.CASCADE)
-//	private Customer customer;
-
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "customer_coupon", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "coupon_id"))
 	List<Customer> customers;
-
+	
+	
 	public Coupon() {
 
 	}
