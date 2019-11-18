@@ -105,6 +105,16 @@ public class CompanyCTR {
 		}
 		return null;
 	}
+	
+	@GetMapping("/coupon/{companyid}/{couponid}") 
+	public Coupon getOneCoupon(@PathVariable int companyid, @PathVariable int couponid) {
+		try {
+			return companyService.getOneCoupon(companyid, couponid);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
 
 	@GetMapping("/couponbyenddate/{companyid}/{date}")
 	public ResponseEntity<List<Coupon>> getCouponsByEndDate(@PathVariable("date") String endDate,@PathVariable("companyid") int companyid) {

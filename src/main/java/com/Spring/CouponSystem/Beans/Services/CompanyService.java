@@ -119,6 +119,12 @@ public class CompanyService implements CouponClient {
 		}
 
 	}
+	
+	public Coupon getOneCoupon(int companyid,int couponid) {
+		return couponRepo.findCompanyCoupon(companyid, couponid);
+		
+	}
+	
 
 	public void saveCompany(Company company) {
 		companyRepo.save(company);

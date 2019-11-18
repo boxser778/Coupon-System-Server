@@ -40,10 +40,6 @@ public class Customer {
 	@Column(nullable = false)
 	@Basic(optional = false)
 	private String customerPassword;
-
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", orphanRemoval = true, fetch = FetchType.LAZY)
-//	@JsonManagedReference("customer")
-//	private List<Coupon> coupons = new ArrayList<>(0);
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(

@@ -54,7 +54,7 @@ public class Coupon {
 
 	@Column(nullable = false)
 	@Basic(optional = false)
-	@JsonFormat(pattern="dd-MM-yyyy")
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date endDate;
 
 	@Column(nullable = false)
@@ -81,8 +81,7 @@ public class Coupon {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "customer_coupon", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "coupon_id"))
 	List<Customer> customers;
-	
-	
+
 	public Coupon() {
 
 	}
@@ -189,7 +188,6 @@ public class Coupon {
 	public void setCustomers(List<Customer> customers) {
 		this.customers = customers;
 	}
-	
 
 	@Override
 	public String toString() {
