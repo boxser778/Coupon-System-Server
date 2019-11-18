@@ -36,7 +36,7 @@ public class CouponSystem {
 
 	@Autowired
 	private CouponThread couponThread;
-	
+
 	@Autowired
 	private CustomerService customerService;
 
@@ -64,14 +64,14 @@ public class CouponSystem {
 			if (comp != null) {
 				CompanyService company = context.getBean(CompanyService.class);
 				company.setCompany(comp);
-				return  (CouponClient) company;
+				return (CouponClient) company;
 //			if (name.equals("company") && password.equals("1234")) {
 //				companyService = context.getBean(CompanyService.class);
 //				return companyService;
 			} else {
 				throw new Exception("Company failed to connect");
 			}
-			
+
 		case CUSTOMER:
 			Customer cust = customerRepo.findByCustomerNameAndPassword(name, password);
 			if (cust != null) {
@@ -85,7 +85,7 @@ public class CouponSystem {
 			} else {
 				throw new Exception("Customer failed to connect");
 			}
-			
+
 		default:
 			break;
 		}
