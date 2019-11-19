@@ -50,6 +50,7 @@ public class Coupon {
 
 	@Column(nullable = false)
 	@Basic(optional = false)
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date startDate;
 
 	@Column(nullable = false)

@@ -51,9 +51,12 @@ public interface CouponRepo extends JpaRepository<Coupon, Integer> {
 
 	@Query("SELECT c from Customer as customer join customer.coupons As c WHERE customer.id=:id AND c.price=:price")
 	public List<Coupon> findCustomerCouponByPrice(int id, double price);
-	
+
 	List<Coupon> findByEndDateBefore(Date date);
 	
 	@Query("SELECT c from Company as company join company.coupons As c WHERE company.id=:companyid AND c.id=:couponid")
-	public Coupon findCompanyCoupon(int companyid, int couponid);
+	public Coupon findOneCoupon(int companyid, int couponid);
+	
+	@Query("SELECT c from Customer as customer join customer.coupons As c WHERE customer.id=:customerid AND c.id=:couponid")
+	public Coupon findOneCustomerCoupon(int customerid, int couponid);
 }

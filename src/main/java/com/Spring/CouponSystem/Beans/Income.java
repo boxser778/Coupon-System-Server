@@ -35,9 +35,9 @@ public class Income {
 	@Column(name = "incomeId")
 	private int id;
 
-	@Basic(optional = false)
-	@Column(name = "clientId")
-	private long clientId;
+//	@Basic(optional = false)
+//	@Column(name = "clientId")
+//	private long clientId;
 
 	@Column(nullable = false)
 	@Basic(optional = false)
@@ -65,13 +65,13 @@ public class Income {
 		this.id = id;
 	}
 
-	public long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(long clientId) {
-		this.clientId = clientId;
-	}
+//	public long getClientId() {
+//		return clientId;
+//	}
+//
+//	public void setClientId(long clientId) {
+//		this.clientId = clientId;
+//	}
 
 	public String getName() {
 		return name;

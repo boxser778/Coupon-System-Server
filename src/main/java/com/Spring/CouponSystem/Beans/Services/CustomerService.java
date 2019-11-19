@@ -58,8 +58,8 @@ public class CustomerService implements CouponClient {
 		return false;
 	}
 
-	public boolean checkIfCouponExists(int couponid) {
-		if (couponRepo.findById(couponid) != null) {
+	public boolean checkIfCouponExists(int customerid, int couponid) {
+		if (couponRepo.findOneCustomerCoupon(customerid, couponid) != null) {
 			return true;
 		}
 		return false;
@@ -79,17 +79,13 @@ public class CustomerService implements CouponClient {
 		return false;
 	}
 
-//	public boolean checkIfCustomerCouponExists(int customerId) throws Exception {
-//
-//	}
-
 	public Customer purchaseCoupon(Coupon coupon, int customerId) throws Exception {
 		if (checkIfCustomerExists(customerId)) {
 			Coupon getCouponById = couponRepo.findById(coupon.getid());
 			customerRepo.findByCouponId(coupon.getid());
-//			if (checkIfCustomerCouponExists(customerId)) {
-//				throw new Exception("this customer allready got this coupon");
-//			}
+			if (checkIfCouponExists(customerId, coupon.getid())) {
+				throw new Exception("this customer allready got this coupon");
+			}
 			if (checkCouponAmount(getCouponById)) {
 				throw new Exception("out of stock");
 			}
@@ -98,14 +94,14 @@ public class CustomerService implements CouponClient {
 			}
 
 			else {
-
+				Coupon newCoupon = couponRepo.findById(coupon.getid());
 				Customer customer = customerRepo.findById(customerId);
 				customer.getCoupons().add(coupon);
 				customerRepo.save(customer);
-//			coupon.setAmount(coupon.getAmount() - 1);
+				newCoupon.setAmount(newCoupon.getAmount() - 1);
 
 				Income income = new Income();
-				income.setClientId(customerId);
+//				income.setClientId(customerId);
 				Coupon couponPricetmp = couponRepo.findById(coupon.getid());
 				income.setPrice(couponPricetmp.getPrice());
 				income.setDescription(IncomeType.CUSTOMER_PURCHASE);
@@ -132,6 +128,11 @@ public class CustomerService implements CouponClient {
 		} else {
 			throw new Exception("This customer doesn't exist");
 		}
+	}
+
+	public Coupon getOneCoupon(int companyid, int couponid) {
+		return couponRepo.findOneCoupon(companyid, couponid);
+
 	}
 
 	public List<Coupon> getCouponsByType(int customerid, CouponType type) {

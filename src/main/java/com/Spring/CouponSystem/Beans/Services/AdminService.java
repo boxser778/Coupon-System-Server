@@ -18,13 +18,6 @@ import com.Spring.CouponSystem.Login.CouponClient;
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class AdminService implements CouponClient {
 
-//	public boolean login(String name, String password) {
-//		return (name.equals("admin") && password.equals("1234"));
-//
-//	}
-
-	// @@@@@@@@@@@@@@@@@@@ Company Options @@@@@@@@@@@@@@@@@@@
-
 	@Autowired
 	CompanyRepo companyRepo;
 	@Autowired
@@ -70,8 +63,6 @@ public class AdminService implements CouponClient {
 		return companyRepo.findAll();
 	}
 
-	// @@@@@@@@@@@@@@@@@@@ Customer Options @@@@@@@@@@@@@@@@@@@
-
 	public Customer findCustomer(int id) {
 		return customerRepo.findById(id);
 	}
@@ -111,7 +102,6 @@ public class AdminService implements CouponClient {
 
 	@Override
 	public CouponClient login(String name, String password, ClientType clientType) {
-		// TODO Auto-generated method stub
 		return new AdminService();
 	}
 

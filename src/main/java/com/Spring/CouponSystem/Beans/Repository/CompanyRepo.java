@@ -19,9 +19,6 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
 
 	@Query("Select c from Company c where c.comp_Name = :compName")
 	Company findCompanyByCompName(String compName);
-
-//	@Query("SELECT company FROM COMPANY as company join company.coupons as c.id=:couponId")
-//	List<Coupon> findCouponsByCompany(int  companyId);
 	
 	@Query("select c from Coupon c where c.endDate = :endDate")
 	List<Coupon> findCouponsByDate(Date endDate);

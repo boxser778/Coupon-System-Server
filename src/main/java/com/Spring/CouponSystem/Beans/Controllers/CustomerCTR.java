@@ -86,14 +86,17 @@ public class CustomerCTR {
 		return new ResponseEntity<List<Coupon>>(customerService.getCouponsByPrice(customerid, price), HttpStatus.OK);
 
 	}
+	
+	@GetMapping("/coupon/{companyid}/{couponid}")
+	public Coupon getOneCoupon(@PathVariable int companyid,@PathVariable int couponid) {
+		try {
+			return customerService.getOneCoupon(companyid, couponid);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
 
 }
 
-//		public CustomerCTR login(String name, String password, ClientType clientType) throws LoginException, Exception {
-//			
-//			if (name.equals("customer") && password.equals("customer") && clientType.equals(ClientType.CUSTOMER)) {
-//			
-//		}
-//			return new CustomerCTR();
-//
-//		}

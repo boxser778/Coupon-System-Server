@@ -1,6 +1,9 @@
 package com.Spring.CouponSystem.Beans.Repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.Spring.CouponSystem.Beans.Income;
@@ -9,6 +12,9 @@ import com.Spring.CouponSystem.Beans.Income;
 public interface IncomeRepo extends JpaRepository<Income, Long>{
 	
 	Income findClientById(int id);
+	
+	@Query("Select c from Income c where c.name = :name")
+	List<Income> findAllIncomeByName(String name);
 
 //	Income storeIncome(Income income);
 	
