@@ -25,8 +25,10 @@ import com.Spring.CouponSystem.Session;
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
+import com.Spring.CouponSystem.Beans.Income;
 import com.Spring.CouponSystem.Beans.Repository.CustomerRepo;
 import com.Spring.CouponSystem.Beans.Services.AdminService;
+import com.Spring.CouponSystem.Beans.Services.IncomeService;
 import com.Spring.CouponSystem.Login.ClientType;
 import com.Spring.CouponSystem.Login.CouponClient;
 
@@ -40,6 +42,9 @@ public class AdminCTR {
 
 	@Autowired
 	private Map<String, Session> tokens;
+
+	@Autowired
+	IncomeService incomeService;
 
 	private Session exists(String token) {
 		return LoginController.tokens.get(token);
@@ -68,7 +73,7 @@ public class AdminCTR {
 
 	// http://localhost:8080/coupon-system/admin/company/{id}
 	@GetMapping("/company/{id}")
-	public ResponseEntity<?> getCompany(@PathVariable("id") int id){
+	public ResponseEntity<?> getCompany(@PathVariable("id") int id) {
 		try {
 			return new ResponseEntity<Company>(adminService.findCompany(id), HttpStatus.OK);
 
@@ -151,6 +156,43 @@ public class AdminCTR {
 			return new ResponseEntity<Customer>(customer, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+	}
+
+	@GetMapping("/viewincomebycompanyname/{name}")
+	public List<Income> viewIncomeByCompanyId(@PathVariable String name) {
+		try {
+			return incomeService.viewIncomeByCompanyName(name);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return null;
+	}
+
+	@GetMapping("/viewincomebycustomername/{name}")
+	public List<Income> viewIncomeByCustomerId(@PathVariable String name) {
+		try {
+			return incomeService.viewIncomeByCustomerName(name);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return null;
+	}
+
+	@GetMapping("/viewallincome")
+	public ResponseEntity<List<Income>> viewAllIncome() throws Exception {
+		try {
+			if (incomeService.allIncome() != null) {
+				ResponseEntity<List<Income>> result = new ResponseEntity<List<Income>>(incomeService.allIncome(),
+						HttpStatus.OK);
+				return result;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return null;
 	}
 
 }

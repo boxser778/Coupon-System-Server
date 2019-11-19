@@ -27,9 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Spring.CouponSystem.Session;
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
+import com.Spring.CouponSystem.Beans.Income;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.Spring.CouponSystem.Beans.Repository.CompanyRepo;
+import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
 import com.Spring.CouponSystem.Beans.Services.CompanyService;
+import com.Spring.CouponSystem.Beans.Services.IncomeService;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -44,6 +47,12 @@ public class CompanyCTR {
 
 	@Autowired
 	CompanyRepo companyRepo;
+	
+	@Autowired
+	CouponRepo couponRepo;
+	
+	@Autowired
+	IncomeService incomeService;
 
 //	http://localhost:8080/coupon-system/company/coupon/{companyId}
 //	{
@@ -78,15 +87,27 @@ public class CompanyCTR {
 		return new ResponseEntity<Coupon>(coupon, HttpStatus.OK);
 	}
 //	http://localhost:8080/coupon-system/company/coupon/{companyId}
+//	@DeleteMapping("/coupon/{id}")
+//	public ResponseEntity<?> removeCoupon(@PathParam("id") Coupon coupon) {
+//		try {
+//			companyService.deleteCoupon(coupon);
+//		} catch (Exception e) {
+//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+//		}
+//		return new ResponseEntity<String>("Coupon Deleled!", HttpStatus.OK);
+//	}
+	
 	@DeleteMapping("/coupon/{id}")
-	public ResponseEntity<?> removeCoupon(@PathParam("id") Coupon coupon) {
+	public ResponseEntity<?> removeCoupon(@PathVariable("id") int id) {
 		try {
-			companyService.deleteCoupon(coupon);
+			companyService.deleteCoupon(id);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<String>("Coupon Deleled!", HttpStatus.OK);
 	}
+	
+	
 //	http://localhost:8080/coupon-system/company/company/{companyId}
 	@GetMapping("/company/{id}")
 	public ResponseEntity<?> getCompany(@PathVariable("id") int id) {
@@ -100,6 +121,16 @@ public class CompanyCTR {
 	public List<Coupon> getAllCompanyCoupons(@PathVariable int companyid) {
 		try {
 			return companyService.getAllCompanyCoupons(companyid);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+	
+	@GetMapping("/coupon/{companyid}/{couponid}")
+	public Coupon getOneCoupon(@PathVariable int companyid,@PathVariable int couponid) {
+		try {
+			return companyService.findOneCoupon(companyid, couponid);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -128,6 +159,17 @@ public class CompanyCTR {
 		}
 		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByType(companyid, type), HttpStatus.OK);
 
+	}
+	
+	@GetMapping("/viewincomebycompanyname/{name}")
+	public List<Income> viewIncomeByCompanyId(@PathVariable String name) {
+		try {
+			return incomeService.viewIncomeByCompanyName(name);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return null;
 	}
 
 }

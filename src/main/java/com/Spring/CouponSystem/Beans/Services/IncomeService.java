@@ -1,6 +1,8 @@
 package com.Spring.CouponSystem.Beans.Services;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,40 +13,34 @@ import com.Spring.CouponSystem.Beans.Repository.IncomeRepo;
 
 @Service
 @CrossOrigin()
-public class IncomeService{
+public class IncomeService {
 
 	@Autowired
 	private IncomeRepo incomeRepo;
-	
-	public Income storeIncome (Income income) {
+
+	public Income storeIncome(Income income) {
 		incomeRepo.save(income);
 		return income;
 	}
-	
-	
-	public List<Income> allIncome(){
+
+	public List<Income> allIncome() {
 		return incomeRepo.findAll();
 	}
-	
 
-	
-	public Income viewIncomeByCustomerId(int id) throws Exception{
+	public List<Income> viewIncomeByCustomerName(String name) throws Exception {
 		try {
-			Income allIncomesByCustomer = incomeRepo.findClientById(id);
-			return allIncomesByCustomer;
+			return incomeRepo.findAllIncomeByName(name);
 		} catch (Exception e) {
-			throw new Exception("Fialed to Get all incomes by customer " + id);
+			throw new Exception("Fialed to Get all incomes by customer ");
 		}
 	}
-	
-	
-	public Income viewIncomeByCompanyId(int id) throws Exception{
+
+	public List<Income> viewIncomeByCompanyName(String name) throws Exception {
 		try {
-			Income allIncomesByCompany = incomeRepo.findClientById(id);
-			return allIncomesByCompany;
+			return incomeRepo.findAllIncomeByName(name);
+
 		} catch (Exception e) {
-			throw new Exception("Fialed to Get all incomes by company " + id);
+			throw new Exception("Fialed to Get all incomes by company ");
 		}
 	}
 }
-	

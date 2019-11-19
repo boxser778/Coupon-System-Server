@@ -64,7 +64,7 @@ public class CompanyService implements CouponClient {
 				couponRepo.save(coupon);
 
 				Income income = new Income();
-				income.setClientId(companyId);
+//				income.setClientId(companyId);
 				income.setPrice(100.0);
 				income.setDescription(IncomeType.COMPANY_NEW_COUPON);
 				LocalDate localDate = LocalDate.now();
@@ -86,10 +86,10 @@ public class CompanyService implements CouponClient {
 		Coupon currentCoupon = couponRepo.findById(coupon.getid());
 		currentCoupon.setEndDate(coupon.getEndDate());
 		currentCoupon.setPrice(coupon.getPrice());
-		couponRepo.save(currentCoupon);
+		couponRepo.saveAndFlush(currentCoupon);
 
 		Income income = new Income();
-		income.setClientId(this.company.getId());
+//		income.setClientId(this.company.getId());
 		income.setPrice(10.0);
 		income.setDescription(IncomeType.COMPANY_UPDATE_COUPON);
 		LocalDate localDate = LocalDate.now();
@@ -102,11 +102,22 @@ public class CompanyService implements CouponClient {
 
 	}
 
-	public boolean deleteCoupon(Coupon coupon) {
+//	public boolean deleteCoupon(Coupon coupon) {
+//		if (true) {
+//			couponRepo.delete(coupon);
+//		}
+//		return false;
+//	}
+
+	public boolean deleteCoupon(int id) {
 		if (true) {
-			couponRepo.delete(coupon);
+			couponRepo.deleteById(id);
 		}
 		return false;
+	}
+
+	public Coupon findOneCoupon(int companyid, int couponid) {
+		return couponRepo.findOneCoupon(companyid, couponid);
 	}
 
 	public List<Coupon> getAllCompanyCoupons(int company_id) throws Exception {

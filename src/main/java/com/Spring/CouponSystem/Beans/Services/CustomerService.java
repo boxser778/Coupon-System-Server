@@ -105,7 +105,7 @@ public class CustomerService implements CouponClient {
 //			coupon.setAmount(coupon.getAmount() - 1);
 
 				Income income = new Income();
-				income.setClientId(customerId);
+//				income.setClientId(customerId);
 				Coupon couponPricetmp = couponRepo.findById(coupon.getid());
 				income.setPrice(couponPricetmp.getPrice());
 				income.setDescription(IncomeType.CUSTOMER_PURCHASE);
