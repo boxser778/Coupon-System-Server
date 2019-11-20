@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 
@@ -26,6 +27,7 @@ import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Income;
+import com.Spring.CouponSystem.Beans.Tokens;
 import com.Spring.CouponSystem.Beans.Repository.CustomerRepo;
 import com.Spring.CouponSystem.Beans.Services.AdminService;
 import com.Spring.CouponSystem.Beans.Services.IncomeService;
@@ -37,22 +39,44 @@ import com.Spring.CouponSystem.Login.CouponClient;
 @RequestMapping("admin")
 public class AdminCTR {
 
+	
+	@Resource
+	private Tokens tokens;
+	
 	@Autowired
 	AdminService adminService;
 
-	@Autowired
-	private Map<String, Session> tokens;
+//	@Autowired
+//	private Map<String, Session> tokens;
 
 	@Autowired
 	IncomeService incomeService;
 
-	private Session exists(String token) {
-		return LoginController.tokens.get(token);
+//	private Session exists(String token) {
+//		return LoginController.tokens.get(token);
+//	}
+	
+	
+	public AdminService getAdminService(String token) {
+		try {
+
+			if (tokens.getTokensMap().containsKey(token)) {
+				AdminService adminService = (AdminService) tokens.getTokensMap().get(token).getCouponClient();
+				return adminService;
+			} else {
+				throw new Exception("Invalid token: ");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 
+
 	// http://localhost:8080/coupon-system/admin/company
-	@GetMapping("/company")
-	public ResponseEntity<List<Company>> getAllCompanys() {
+	@GetMapping("/company/{token}")
+	public ResponseEntity<List<Company>> getAllCompanys(@PathVariable("token") String token) {
+		AdminService adminService = getAdminService(token);
 		return new ResponseEntity<List<Company>>(adminService.findAllCompanies(), HttpStatus.OK);
 	}
 

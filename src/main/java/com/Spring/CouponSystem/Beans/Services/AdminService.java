@@ -24,6 +24,8 @@ public class AdminService implements CouponClient {
 	CustomerRepo customerRepo;
 	@Autowired
 	CouponRepo couponRepo;
+	
+	private ClientType clientType = ClientType.ADMIN;
 
 	public AdminService() {
 	}

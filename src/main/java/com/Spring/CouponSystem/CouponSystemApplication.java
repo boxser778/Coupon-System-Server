@@ -1,5 +1,6 @@
 package com.Spring.CouponSystem;
 
+import org.apache.catalina.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,6 +18,10 @@ public class CouponSystemApplication {
 
 }
 
+//<dependency>
+//	<groupId>org.springframework.boot</groupId>
+//	<artifactId>spring-boot-starter-security</artifactId>
+//</dependency>
 //<dependency>
 //	<groupId>org.springframework.boot</groupId>
 //	<artifactId>spring-boot-starter-security</artifactId>

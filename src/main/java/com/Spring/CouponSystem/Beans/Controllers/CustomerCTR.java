@@ -46,11 +46,11 @@ public class CustomerCTR {
 
 //	http://localhost:8080/coupon-system/customer/coupon/{customerid}
 // 	coupon id = {"id" : 1}
-	@PostMapping("/coupon/{customerid}")
-	public ResponseEntity<String> purchaseCoupon(@RequestBody Coupon coupon,
-			@PathVariable("customerid") int customerId) {
+	@PostMapping("/coupon")
+	public ResponseEntity<String> purchaseCoupon(@RequestBody Coupon coupon,@RequestBody String token) {
 		try {
-			customerService.purchaseCoupon(coupon, customerId);
+//			Customer customer = getCustomer(token);
+//			customerService.purchaseCoupon(coupon, customer.getId());
 			return new ResponseEntity<>("Customer purchaed coupon", HttpStatus.OK);
 
 		} catch (Exception e) {
