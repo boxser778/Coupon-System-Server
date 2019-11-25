@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Spring.CouponSystem.Session;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
@@ -37,8 +36,8 @@ public class CustomerCTR {
 	@Autowired
 	private CustomerService customerService;
 
-	@Autowired
-	private Map<String, Session> tokens;
+//	@Autowired
+//	private Map<String, Session> tokens;
 
 //	private Session exists(String token) {
 //		return LoginController.tokens.get(token);

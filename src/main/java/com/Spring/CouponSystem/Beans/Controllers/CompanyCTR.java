@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Spring.CouponSystem.Session;
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Income;
@@ -42,8 +41,8 @@ public class CompanyCTR {
 	@Autowired
 	private CompanyService companyService;
 
-	@Autowired
-	private Map<String, Session> tokens;
+//	@Autowired
+//	private Map<String, Session> tokens;
 
 	@Autowired
 	CompanyRepo companyRepo;
