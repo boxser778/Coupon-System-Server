@@ -25,8 +25,14 @@ public class AdminService implements CouponClient {
 	@Autowired
 	CouponRepo couponRepo;
 	
-	private ClientType clientType = ClientType.ADMIN;
+//	private ClientType clientType = ClientType.ADMIN;
 
+	public boolean login(String user, String password) {
+		return (user.equals("admin") && password.equals("1234"));
+		
+	}
+	
+	
 	public AdminService() {
 	}
 

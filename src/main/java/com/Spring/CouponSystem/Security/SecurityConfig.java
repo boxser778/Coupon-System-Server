@@ -25,12 +25,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(myUserDetailsService);
+		auth.inMemoryAuthentication().withUser("admin").password("1234").roles("ADMIN");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 		.antMatchers("/authenticate").permitAll()
+//		.antMatchers("/admin").authenticated()
+//		.antMatchers("/admin").hasRole("ADMIN")
+		.antMatchers("/admin/**").permitAll()
 		.anyRequest().authenticated().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtReqeustFilter, UsernamePasswordAuthenticationFilter.class);
 	}

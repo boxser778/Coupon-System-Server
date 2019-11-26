@@ -46,6 +46,10 @@ public class CustomerService implements CouponClient {
 	IncomeRepo incomeRepo;
 
 	private Customer customer;
+	
+	public Customer findCustomerByNameAndPassword(String name, String password) {
+		return customerRepo.findByCustomerNameAndPassword(name, password);
+	}
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;

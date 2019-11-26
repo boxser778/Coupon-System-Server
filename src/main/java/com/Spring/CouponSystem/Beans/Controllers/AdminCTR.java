@@ -6,10 +6,13 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
@@ -59,7 +64,7 @@ public class AdminCTR {
 //		}
 //		return null;
 //	}
-
+	
 	// http://localhost:8080/coupon-system/admin/company
 	@GetMapping("/company")
 	public ResponseEntity<List<Company>> getAllCompanys() {
@@ -104,8 +109,8 @@ public class AdminCTR {
 
 	// http://localhost:8080/coupon-system/admin/company
 	// {"password":"shmuel","email":"zzz","comp_Name":"wava"}
-	@PostMapping("/company")
-	public ResponseEntity<?> newCompany(@RequestBody Company c) throws Exception {
+	@PostMapping("/company/{token}")
+	public ResponseEntity<?> newCompany(@RequestBody Company c, @PathVariable("token") String token) throws Exception {
 		if (adminService.isCompNameExists(c.getComp_Name()) == false) {
 			return new ResponseEntity<String>("name Exist", HttpStatus.BAD_REQUEST);
 		} else {

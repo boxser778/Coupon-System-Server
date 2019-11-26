@@ -35,6 +35,10 @@ public class CompanyService implements CouponClient {
 	IncomeRepo incomeRepo;
 
 	private Company company;
+	
+	public Company findByNameAndPassword(String compName, String password) {
+		return companyRepo.findByCompanyNameAndPassword(compName, password);
+	}
 
 	public Company findById(int id) {
 		return companyRepo.findById(id);
