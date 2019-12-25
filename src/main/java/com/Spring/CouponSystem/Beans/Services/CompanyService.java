@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-import javax.security.auth.login.LoginException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,17 +11,18 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Income;
+import com.Spring.CouponSystem.Beans.LoginUser;
+import com.Spring.CouponSystem.Beans.Enum.ClientType;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.Spring.CouponSystem.Beans.Enum.IncomeType;
 import com.Spring.CouponSystem.Beans.Repository.CompanyRepo;
 import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
 import com.Spring.CouponSystem.Beans.Repository.IncomeRepo;
-import com.Spring.CouponSystem.Login.ClientType;
-import com.Spring.CouponSystem.Login.CouponClient;
+
 
 @Service
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
-public class CompanyService implements CouponClient {
+public class CompanyService {
 
 	@Autowired
 	CompanyRepo companyRepo;
@@ -86,20 +85,20 @@ public class CompanyService implements CouponClient {
 		return coupon;
 	}
 
-	public Coupon updateCoupon(Coupon coupon) {
+	public Coupon updateCoupon(int companyid,Coupon coupon) {
 		Coupon currentCoupon = couponRepo.findById(coupon.getid());
 		currentCoupon.setEndDate(coupon.getEndDate());
 		currentCoupon.setPrice(coupon.getPrice());
 		couponRepo.saveAndFlush(currentCoupon);
 
 		Income income = new Income();
-//		income.setClientId(this.company.getId());
+//		income.setClientId(company.getId());
 		income.setPrice(10.0);
 		income.setDescription(IncomeType.COMPANY_UPDATE_COUPON);
 		LocalDate localDate = LocalDate.now();
 		Date date = java.sql.Date.valueOf(localDate);
 		income.setDate(date);
-		income.setName("Company " + company.getComp_Name());
+		income.setName(coupon.getCompany().getComp_Name());
 		incomeRepo.save(income);
 
 		return currentCoupon;
@@ -149,7 +148,7 @@ public class CompanyService implements CouponClient {
 		return couponRepo.findCompanyCouponByEndDate(companyid, endDate);
 	}
 
-	public List<Coupon> getCouponsByPrice(int companyid, double price) {
+	public List<Coupon> getCouponsByPrice(int companyid,double price) {
 		return couponRepo.findCompanyCouponByPrice(companyid, price);
 	}
 
@@ -157,10 +156,20 @@ public class CompanyService implements CouponClient {
 		return couponRepo.findCompanyCouponByType(companyid, type);
 	}
 
-	@Override
-	public CouponClient login(String name, String password, ClientType clientType) throws LoginException, Exception {
+	public LoginUser login(String companyName,String password,ClientType type)  {
+		if (!companyName.isEmpty() ) {
+			Company c = companyRepo.findByCompanyNameAndPassword(companyName, password);
+			if (c != null) {
+				System.out.println("Login Succes!");
+				return new LoginUser(c.getId(),c.getComp_Name(), ClientType.COMPANY);
+			}
+			else {
+				System.err.println("Login Faild!");
+			}
+		}
+		
+		return null;
 
-		return new CompanyService();
 	}
 
 }

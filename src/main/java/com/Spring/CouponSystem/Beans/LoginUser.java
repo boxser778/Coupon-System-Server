@@ -1,41 +1,40 @@
 package com.Spring.CouponSystem.Beans;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.Spring.CouponSystem.Beans.Enum.ClientType;
 
-import org.springframework.stereotype.Component;
-
-@Component
-@Table(name = "loginuser")
 public class LoginUser {
-	
-	@Column(nullable = false)
-	@Basic(optional = false)
+
+	private int userId;
 	private String username;
-	
-	@Column(nullable = false)
-	@Basic(optional = false)
 	private String password;
-	
-	@Column(nullable = false)
-	@Basic(optional = false)
-	private String clientType;
-	
-	
+	private ClientType clientType;
 
 	public LoginUser() {
-	
+
 	}
 
-	public LoginUser(String username, String password, String clientType) {
+	public LoginUser(int userId, String username, ClientType clientType) {
+		this.userId = userId;
+		this.username = username;
+		this.clientType = clientType;
+	}
+
+	public LoginUser(String username, String password, ClientType clientType) {
 		this.username = username;
 		this.password = password;
 		this.clientType = clientType;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public void newUser(int userId) {
+		this.userId = userId;
 	}
 
 	public String getUsername() {
@@ -54,20 +53,18 @@ public class LoginUser {
 		this.password = password;
 	}
 
-	public String getClientType() {
+	public ClientType getClientType() {
 		return clientType;
 	}
 
-	public void setClientType(String clientType) {
+	public void setClientType(ClientType clientType) {
 		this.clientType = clientType;
 	}
 
 	@Override
 	public String toString() {
-		return "LoginUser [username=" + username + ", password=" + password + ", clientType=" + clientType + "]";
+		return "LoginUser [userId=" + userId + ", username=" + username + ", password=" + password + ", clientType="
+				+ clientType + "]";
 	}
-	
-	
-	
-	
+
 }

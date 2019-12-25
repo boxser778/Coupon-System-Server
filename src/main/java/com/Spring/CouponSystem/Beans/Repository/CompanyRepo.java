@@ -19,7 +19,7 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
 
 	@Query("Select c from Company c where c.comp_Name = :compName")
 	Company findCompanyByCompName(String compName);
-	
+
 	@Query("select c from Coupon c where c.endDate = :endDate")
 	List<Coupon> findCouponsByDate(Date endDate);
 

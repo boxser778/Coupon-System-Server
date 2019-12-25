@@ -2,21 +2,23 @@ package com.Spring.CouponSystem.Beans.Services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Customer;
+import com.Spring.CouponSystem.Beans.LoginUser;
+import com.Spring.CouponSystem.Beans.Enum.ClientType;
 import com.Spring.CouponSystem.Beans.Repository.CompanyRepo;
 import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
 import com.Spring.CouponSystem.Beans.Repository.CustomerRepo;
-import com.Spring.CouponSystem.Login.ClientType;
-import com.Spring.CouponSystem.Login.CouponClient;
 
 @Service
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
-public class AdminService implements CouponClient {
+public class AdminService {
 
 	@Autowired
 	CompanyRepo companyRepo;
@@ -24,15 +26,7 @@ public class AdminService implements CouponClient {
 	CustomerRepo customerRepo;
 	@Autowired
 	CouponRepo couponRepo;
-	
-//	private ClientType clientType = ClientType.ADMIN;
 
-	public boolean login(String user, String password) {
-		return (user.equals("admin") && password.equals("1234"));
-		
-	}
-	
-	
 	public AdminService() {
 	}
 
@@ -107,10 +101,18 @@ public class AdminService implements CouponClient {
 	public List<Customer> findAllCustomers() {
 		return customerRepo.findAll();
 	}
+	
+	@SuppressWarnings("static-access")
+	public LoginUser login(String admin, String password, ClientType type) {
+		if (admin.equals("admin") && password.equals("1234")&& type.equals(type.ADMIN)) {
+			return new LoginUser(admin, password,type.ADMIN);
+		}
+		return null;
+	}
 
-	@Override
-	public CouponClient login(String name, String password, ClientType clientType) {
-		return new AdminService();
+	public LoginUser getLoggedUser(HttpServletRequest req) {
+		return (LoginUser) req.getSession(false).getAttribute("user");
+
 	}
 
 }

@@ -1,3 +1,5 @@
+//package com.Spring.CouponSystem.Filter;
+//package com.Spring.CouponSystem.Filter;
 //package com.Spring.CouponSystem.Configurations;
 //
 //import javax.servlet.Filter;
@@ -7,8 +9,12 @@
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 //
+//import org.springframework.boot.web.servlet.FilterRegistrationBean;
+//import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+//
+//import com.Spring.CouponSystem.Filter.RequestResponseLoggingFilter;
 //
 //@Configuration
 //@EnableWebMvc
@@ -43,9 +49,7 @@
 //                  "access-control-request-headers,access-control-request-method,accept,origin,authorization,x-requested-with,responseType,observe,application/json");
 //          response.setStatus(HttpServletResponse.SC_OK);
 //      }
-//      
-//      
-//
+//  
 //    } 
 //    
 //    

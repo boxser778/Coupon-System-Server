@@ -1,30 +1,18 @@
 package com.Spring.CouponSystem.Beans;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.Spring.CouponSystem.Beans.Enum.IncomeType;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "income")
@@ -34,10 +22,6 @@ public class Income {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "incomeId")
 	private int id;
-
-//	@Basic(optional = false)
-//	@Column(name = "clientId")
-//	private long clientId;
 
 	@Column(nullable = false)
 	@Basic(optional = false)
@@ -64,14 +48,6 @@ public class Income {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-//	public long getClientId() {
-//		return clientId;
-//	}
-//
-//	public void setClientId(long clientId) {
-//		this.clientId = clientId;
-//	}
 
 	public String getName() {
 		return name;
@@ -110,4 +86,5 @@ public class Income {
 		return "Income [id=" + id + ", name=" + name + ", date=" + date + ", description=" + description + ", price="
 				+ price + "]";
 	}
+
 }

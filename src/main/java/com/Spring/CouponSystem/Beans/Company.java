@@ -11,9 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -99,8 +96,8 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ",comp_name=" + comp_Name + ", password=" + password + ", email=" + email
-				+ "] \n\"";
+		return "Company [id=" + id + ", comp_Name=" + comp_Name + ", password=" + password + ", email=" + email
+				+ ", coupons=" + coupons + "]";
 	}
 
 }

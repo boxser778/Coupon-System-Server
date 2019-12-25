@@ -1,18 +1,9 @@
 package com.Spring.CouponSystem.Beans.Controllers;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,23 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.Spring.CouponSystem.Beans.Company;
-import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Income;
-import com.Spring.CouponSystem.Beans.Repository.CustomerRepo;
 import com.Spring.CouponSystem.Beans.Services.AdminService;
 import com.Spring.CouponSystem.Beans.Services.IncomeService;
-import com.Spring.CouponSystem.Login.ClientType;
-import com.Spring.CouponSystem.Login.CouponClient;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-@RequestMapping("admin")
+@RequestMapping("rest/admin")
 public class AdminCTR {
 
 //	@Resource
@@ -50,21 +35,6 @@ public class AdminCTR {
 	@Autowired
 	IncomeService incomeService;
 
-//	public AdminService getAdminService(String token) {
-//		try {
-//
-//			if (tokens.getTokensMap().containsKey(token)) {
-//				AdminService adminService = (AdminService) tokens.getTokensMap().get(token).getCouponClient();
-//				return adminService;
-//			} else {
-//				throw new Exception("Invalid token: ");
-//			}
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//		return null;
-//	}
-	
 	// http://localhost:8080/coupon-system/admin/company
 	@GetMapping("/company")
 	public ResponseEntity<List<Company>> getAllCompanys() {
@@ -76,15 +46,6 @@ public class AdminCTR {
 	public ResponseEntity<List<Customer>> getAllCustomers() {
 		return new ResponseEntity<List<Customer>>(adminService.findAllCustomers(), HttpStatus.OK);
 	}
-
-//	@GetMapping("/company/{id}/{token}")
-//	public ResponseEntity<?> getCompany(@PathVariable("id") int id,@PathVariable("token") String token) throws Exception {
-//		Session session = exists(token);
-//		if (session == null) {
-//			throw new Exception("Something went wrong with the session !!");
-//		} else if (session != null) {
-//			session.setLastAccesed(System.currentTimeMillis());
-//		}
 
 	// http://localhost:8080/coupon-system/admin/company/{id}
 	@GetMapping("/company/{id}")
@@ -109,8 +70,9 @@ public class AdminCTR {
 
 	// http://localhost:8080/coupon-system/admin/company
 	// {"password":"shmuel","email":"zzz","comp_Name":"wava"}
-	@PostMapping("/company/{token}")
-	public ResponseEntity<?> newCompany(@RequestBody Company c, @PathVariable("token") String token) throws Exception {
+//	@PostMapping("/company/{token}")
+	@PostMapping("/company")
+	public ResponseEntity<?> newCompany(@RequestBody Company c) throws Exception {
 		if (adminService.isCompNameExists(c.getComp_Name()) == false) {
 			return new ResponseEntity<String>("name Exist", HttpStatus.BAD_REQUEST);
 		} else {
@@ -173,27 +135,27 @@ public class AdminCTR {
 		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
 
-	@GetMapping("/viewincomebycompanyname/{name}")
-	public List<Income> viewIncomeByCompanyId(@PathVariable String name) {
-		try {
-			return incomeService.viewIncomeByCompanyName(name);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		return null;
-	}
-
-	@GetMapping("/viewincomebycustomername/{name}")
-	public List<Income> viewIncomeByCustomerId(@PathVariable String name) {
-		try {
-			return incomeService.viewIncomeByCustomerName(name);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		return null;
-	}
+//	@GetMapping("/viewincomebycompanyname/{name}")
+//	public List<Income> viewIncomeByCompanyId(@PathVariable String name) {
+//		try {
+//			return incomeService.viewIncomeByCompanyName(name);
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+//
+//		return null;
+//	}
+//
+//	@GetMapping("/viewincomebycustomername/{name}")
+//	public List<Income> viewIncomeByCustomerId(@PathVariable String name) {
+//		try {
+//			return incomeService.viewIncomeByCustomerName(name);
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
+//
+//		return null;
+//	}
 
 	@GetMapping("/viewallincome")
 	public ResponseEntity<List<Income>> viewAllIncome() throws Exception {

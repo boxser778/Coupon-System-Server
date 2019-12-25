@@ -1,16 +1,11 @@
 package com.Spring.CouponSystem.Beans.Controllers;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,13 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
-import com.Spring.CouponSystem.Beans.Income;
+import com.Spring.CouponSystem.Beans.LoginUser;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.Spring.CouponSystem.Beans.Repository.CompanyRepo;
 import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
@@ -35,14 +29,11 @@ import com.Spring.CouponSystem.Beans.Services.IncomeService;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-@RequestMapping("company")
+@RequestMapping("rest/company")
 public class CompanyCTR {
 
 	@Autowired
 	private CompanyService companyService;
-
-//	@Autowired
-//	private Map<String, Session> tokens;
 
 	@Autowired
 	CompanyRepo companyRepo;
@@ -52,6 +43,12 @@ public class CompanyCTR {
 
 	@Autowired
 	IncomeService incomeService;
+
+	public LoginUser getLoggedUser(HttpServletRequest req) {
+		System.out.println("inside company controller" + req.getSession().getAttribute("user"));
+		return (LoginUser) req.getSession(false).getAttribute("user");
+
+	}
 
 //	http://localhost:8080/coupon-system/company/coupon/{companyId}
 //	{
@@ -63,12 +60,11 @@ public class CompanyCTR {
 //	    "price": 22,
 //	    "picture": "https://analyticsindiamag.com/wp-content/uploads/2019/07/image_rec_lib_banner.jpg"
 //	}
-
-	@PostMapping(value = "/coupon/{companyId}")
+	@PostMapping(value = "/coupon/{companyid}")
 	@ResponseBody
-	public ResponseEntity<String> createCoupon(@RequestBody Coupon coupon, @PathVariable("companyId") int companyId) {
+	public ResponseEntity<String> createCoupon(@RequestBody Coupon coupon, HttpServletRequest req) {
 		try {
-			companyService.createCoupon(coupon, companyId);
+			companyService.createCoupon(coupon, getLoggedUser(req).getUserId());
 			return new ResponseEntity<>("coupon created", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage() + e.getStackTrace(), HttpStatus.UNAUTHORIZED);
@@ -76,104 +72,94 @@ public class CompanyCTR {
 
 	}
 
-//	http://localhost:8080/coupon-system/company/coupon/{companyId}
-	@PutMapping("/coupon/{id}")
-	public ResponseEntity<?> updateCoupon(@PathVariable("id") int id, @RequestBody Coupon coupon) {
+//	http://localhost:8080/coupon-system/company/coupon/{couponid}
+	@DeleteMapping("/coupon/{companyid}/{couponid}")
+	public ResponseEntity<?> removeCoupon(@PathVariable("couponid") int couponid) {
 		try {
-			companyService.updateCoupon(coupon);
-		} catch (Exception e) {
-			return new ResponseEntity<String>("Some problem", HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<Coupon>(coupon, HttpStatus.OK);
-	}
-//	http://localhost:8080/coupon-system/company/coupon/{companyId}
-//	@DeleteMapping("/coupon/{id}")
-//	public ResponseEntity<?> removeCoupon(@PathParam("id") Coupon coupon) {
-//		try {
-//			companyService.deleteCoupon(coupon);
-//		} catch (Exception e) {
-//			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-//		}
-//		return new ResponseEntity<String>("Coupon Deleled!", HttpStatus.OK);
-//	}
-
-	@DeleteMapping("/coupon/{id}")
-	public ResponseEntity<?> removeCoupon(@PathVariable("id") int id) {
-		try {
-			companyService.deleteCoupon(id);
+			companyService.deleteCoupon(couponid);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<String>("Coupon Deleled!", HttpStatus.OK);
 	}
 
-//	http://localhost:8080/coupon-system/company/company/{companyId}
-	@GetMapping("/company/{id}")
-	public ResponseEntity<?> getCompany(@PathVariable("id") int id) {
-		if (companyService.findById(id) == null) {
-			return new ResponseEntity<String>("This Id Not Exist!", HttpStatus.BAD_REQUEST);
+//	http://localhost:8080/coupon-system/company/coupon/{companyid}
+	@PutMapping("/coupon/{companyid}")
+	public ResponseEntity<?> updateCoupon(HttpServletRequest req, @RequestBody Coupon coupon) {
+		try {
+			companyService.updateCoupon(getLoggedUser(req).getUserId(), coupon);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Coupon updated", HttpStatus.OK);
 		}
-		return new ResponseEntity<Company>(companyService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<String>("some problem", HttpStatus.BAD_REQUEST);
 	}
 
-//	http://localhost:8080/coupon-system/company/coupon/{companyId}
-	@GetMapping("/coupon/{companyid}")
-	public List<Coupon> getAllCompanyCoupons(@PathVariable int companyid) {
+//	http://localhost:8080/coupon-system/company/coupon/{companyid}
+	@ResponseBody
+	@GetMapping(value = "/company/{companyid}")
+	public Company getCompany(HttpServletRequest req) {
 		try {
-			return companyService.getAllCompanyCoupons(companyid);
+			Company c = companyService.findById(getLoggedUser(req).getUserId());
+			return c;
+		} catch (NullPointerException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+//	http://localhost:8080/coupon-system/company/coupon
+	@GetMapping("/coupon")
+	public List<Coupon> getAllCompanyCoupons(HttpServletRequest req) {
+		try {
+			return companyService.getAllCompanyCoupons(getLoggedUser(req).getUserId());
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return null;
 	}
 
-	@GetMapping("/coupon/{companyid}/{couponid}")
-	public Coupon getOneCoupon(@PathVariable int companyid, @PathVariable int couponid) {
-		try {
-			return companyService.findOneCoupon(companyid, couponid);
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
-	}
-
-	@GetMapping("/couponbyenddate/{companyid}/{date}")
-	public ResponseEntity<List<Coupon>> getCouponsByEndDate(@PathVariable("date") String endDate,
-			@PathVariable("companyid") int companyid) {
-		Date asDate = new Date(Long.parseLong(endDate));
-		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByEndDate(companyid, asDate), HttpStatus.OK);
-	}
-
+//	http://localhost:8080/coupon-system/company/coupon/couponbyprice/{price}
 	@GetMapping("/couponbyprice/{companyid}/{price}")
-	public ResponseEntity<?> getCouponByPrice(@PathVariable("price") double price,
-			@PathVariable("companyid") int companyid) {
-		if (companyService.getCouponsByPrice(companyid, price) == null) {
+	public ResponseEntity<?> getCouponByPrice(@PathVariable("price") double price, HttpServletRequest req) {
+		if (companyService.getCouponsByPrice(getLoggedUser(req).getUserId(), price) == null) {
 			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByPrice(companyid, price), HttpStatus.OK);
+		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByPrice(getLoggedUser(req).getUserId(), price),
+				HttpStatus.OK);
 
 	}
 
-	@GetMapping("/couponbytype/{companyid}/{type}")
-	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type,
-			@PathVariable("companyid") int companyid) {
-		if (companyService.getCouponsByType(companyid, type) == null) {
-			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByType(companyid, type), HttpStatus.OK);
-
-	}
-
-	@GetMapping("/viewincomebycompanyname/{name}")
-	public List<Income> viewIncomeByCompanyId(@PathVariable String name) {
+//	http://localhost:8080/coupon-system/company/coupon/{couponid}
+	@GetMapping("/coupon/{companyid}/{couponid}")
+	public Coupon getOneCoupon(HttpServletRequest req, @PathVariable int couponid) {
 		try {
-			return incomeService.viewIncomeByCompanyName(name);
+			return companyService.findOneCoupon(getLoggedUser(req).getUserId(), couponid);
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
 		return null;
 	}
 
+//	http://localhost:8080/coupon-system/company/coupon/couponbytype/{type}
+	@GetMapping("/couponbytype/{companyid}/{type}")
+	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type, HttpServletRequest req) {
+		if (companyService.getCouponsByType(getLoggedUser(req).getUserId(), type) == null) {
+			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Coupon>>(companyService.getCouponsByType(getLoggedUser(req).getUserId(), type),
+				HttpStatus.OK);
+
+	}
+
+//	@GetMapping("/viewIncomeByCompanyId/{companyId}")
+//	public List<Income> viewIncomeByCompanyId(@PathVariable int companyId, HttpServletRequest req) {
+//			try {
+//				return incomeService.viewIncomeByCompany(companyId);
+//			} catch (Exception e) {
+//				System.out.println(e.getMessage());
+//			}
+//		
+//		return null;
+//	}
 }

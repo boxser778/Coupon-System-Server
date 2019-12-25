@@ -28,7 +28,6 @@ public class CouponThread {
 		couponRepo.deleteAll(couponRepo.findByEndDateBefore(date));
 	}
 
-
 	public void startThread() {
 		new Thread(new Runnable() {
 			@Override
@@ -45,7 +44,7 @@ public class CouponThread {
 			}
 		}).start();
 	}
-	
+
 	public void stopThread() {
 		this.running = false;
 	}

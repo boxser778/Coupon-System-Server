@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,18 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "customer")
@@ -40,12 +32,9 @@ public class Customer {
 	@Column(nullable = false)
 	@Basic(optional = false)
 	private String customerPassword;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(
-	  name = "customer_coupon", 
-	  joinColumns = @JoinColumn(name = "coupon_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "customer_id"))
+	@JoinTable(name = "customer_coupon", joinColumns = @JoinColumn(name = "coupon_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
 	@JsonIgnore
 	private List<Coupon> coupons = new ArrayList<>(0);
 
