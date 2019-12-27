@@ -67,7 +67,7 @@ public class CompanyService {
 				couponRepo.save(coupon);
 
 				Income income = new Income();
-//				income.setClientId(companyId);
+				income.setCompanyid(companyId);
 				income.setPrice(100.0);
 				income.setDescription(IncomeType.COMPANY_NEW_COUPON);
 				LocalDate localDate = LocalDate.now();
@@ -84,25 +84,25 @@ public class CompanyService {
 		}
 		return coupon;
 	}
-
+	
 	public Coupon updateCoupon(int companyid,Coupon coupon) {
-		Coupon currentCoupon = couponRepo.findById(coupon.getid());
-		currentCoupon.setEndDate(coupon.getEndDate());
-		currentCoupon.setPrice(coupon.getPrice());
-		couponRepo.saveAndFlush(currentCoupon);
 
-		Income income = new Income();
-//		income.setClientId(company.getId());
-		income.setPrice(10.0);
-		income.setDescription(IncomeType.COMPANY_UPDATE_COUPON);
-		LocalDate localDate = LocalDate.now();
-		Date date = java.sql.Date.valueOf(localDate);
-		income.setDate(date);
-		income.setName(coupon.getCompany().getComp_Name());
-		incomeRepo.save(income);
+	    coupon.setCompany(companyRepo.findById(companyid));
 
-		return currentCoupon;
-
+	    Coupon currentCoupon = couponRepo.findById(coupon.getid());
+	    currentCoupon.setEndDate(coupon.getEndDate());
+	    currentCoupon.setPrice(coupon.getPrice());
+	    couponRepo.saveAndFlush(currentCoupon);
+	    Income income = new Income();
+	    income.setCompanyid(companyid);
+	    income.setPrice(10.0);
+	    income.setDescription(IncomeType.COMPANY_UPDATE_COUPON);
+	    LocalDate localDate = LocalDate.now();
+	    Date date = java.sql.Date.valueOf(localDate);
+	    income.setDate(date);
+	    income.setName(coupon.getCompany().getComp_Name());
+	    incomeRepo.save(income);
+	    return currentCoupon;
 	}
 
 	public boolean deleteCoupon(int id) {
@@ -171,5 +171,8 @@ public class CompanyService {
 		return null;
 
 	}
+	
+	
+	
 
 }

@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Spring.CouponSystem.Beans.Coupon;
+import com.Spring.CouponSystem.Beans.Income;
 import com.Spring.CouponSystem.Beans.LoginUser;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
-import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
 import com.Spring.CouponSystem.Beans.Services.CustomerService;
 import com.Spring.CouponSystem.Beans.Services.IncomeService;
 
@@ -26,9 +26,6 @@ import com.Spring.CouponSystem.Beans.Services.IncomeService;
 @RestController
 @RequestMapping("rest/customer")
 public class CustomerCTR {
-
-	@Autowired
-	private CouponRepo couponRepo;
 
 	@Autowired
 	private CustomerService customerService;
@@ -42,7 +39,6 @@ public class CustomerCTR {
 
 	}
 
-//	http://localhost:8080/coupon-system/customer/coupon
 	@GetMapping("/coupon")
 	public List<Coupon> getAllCustomerCoupons(HttpServletRequest req) {
 		try {
@@ -53,7 +49,6 @@ public class CustomerCTR {
 		return null;
 	}
 
-	// http://localhost:8080/coupon-system/customer/coupon/couponbytype/{type}
 	@GetMapping("/couponbytype/{customerid}/{type}")
 	public ResponseEntity<?> getCouponByType(@PathVariable("type") CouponType type, HttpServletRequest req) {
 		if (customerService.getCouponsByType(getLoggedUser(req).getUserId(), type) == null) {
@@ -64,7 +59,6 @@ public class CustomerCTR {
 
 	}
 
-	// http://localhost:8080/coupon-system/customer/coupon/couponbyprice/{price}
 	@GetMapping("/couponbyprice/{customerid}/{price}")
 	public ResponseEntity<?> getCouponsByPrice(@PathVariable("price") double price, HttpServletRequest req) {
 		if (customerService.getCouponsByPrice(getLoggedUser(req).getUserId(), price) == null) {
@@ -75,33 +69,33 @@ public class CustomerCTR {
 
 	}
 
-//	http://localhost:8080/coupon-system/customer/coupon/{customerid}
-// 	coupon id = {"id" : 1}
-	@PostMapping("/coupon/{customerid}/{companyid}")
-	public ResponseEntity<String> purchaseCoupon(@RequestBody Coupon coupon, @PathVariable("companyid") int companyid,
-			HttpServletRequest req) {
+	@PostMapping("/coupon/{customerid}/{couponid}")
+	public ResponseEntity<String> purchaseCoupon(@RequestBody Coupon coupon, HttpServletRequest req) {
 		try {
-			customerService.purchaseCoupon(coupon, companyid, getLoggedUser(req).getUserId());
-			return new ResponseEntity<>("Customer purchaed coupon", HttpStatus.OK);
+			customerService.purchaseCoupon(coupon, getLoggedUser(req).getUserId());
+			return new ResponseEntity<String>(HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 	}
 
+	@GetMapping("/coupon/{couponid}")
+	public Coupon getOneCoupon(@PathVariable("couponid") int couponid) {
+		try {
+			return customerService.getOneCouponFromAllCoupons(couponid);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
 	
-	
-	
-	
-//	@GetMapping("/coupon/{customerid}/{companyid}/{couponid}")
-//	public Coupon getOneCoupon(@PathVariable int companyid,@PathVariable int couponid,HttpServletRequest req) {
-//		try {
-//			return customerService.getOneCoupon(companyid, couponid,getLoggedUser(req).getUserId());
-//
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//		return null;
-//	}
+	@GetMapping("/allincomecustomer/{customerid}")
+	public List<Income> viewIncomeByCustomerId(HttpServletRequest req) throws Exception {
+		List<Income> allcustomerincome = incomeService.viewIncomeByCustomer(getLoggedUser(req).getUserId());
+		return allcustomerincome;
+
+	}
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.Spring.CouponSystem.Beans.Enum.IncomeType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "income")
@@ -23,14 +24,21 @@ public class Income {
 	@Column(name = "incomeId")
 	private int id;
 
+	@Basic(optional = false)
+	@Column(nullable = false)
+	private long companyid;
+
+	@Basic(optional = false)
+	@Column(nullable = false)
+	private long customerid;
+
 	@Column(nullable = false)
 	@Basic(optional = false)
 	private String name;
 
 	@Column(nullable = false)
 	@Basic(optional = false)
-//	@JsonFormat(pattern="dd-MM-yyyy")
-//	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date date;
 
 	@Column(nullable = false)
@@ -81,10 +89,26 @@ public class Income {
 		this.price = price;
 	}
 
+	public long getCompanyid() {
+		return companyid;
+	}
+
+	public long getCustomerid() {
+		return customerid;
+	}
+
+	public void setCompanyid(long companyid) {
+		this.companyid = companyid;
+	}
+
+	public void setCustomerid(long customerid) {
+		this.customerid = customerid;
+	}
+
 	@Override
 	public String toString() {
-		return "Income [id=" + id + ", name=" + name + ", date=" + date + ", description=" + description + ", price="
-				+ price + "]";
+		return "Income [id=" + id + ", companyid=" + companyid + ", customerid=" + customerid + ", name=" + name
+				+ ", date=" + date + ", description=" + description + ", price=" + price + "]";
 	}
 
 }

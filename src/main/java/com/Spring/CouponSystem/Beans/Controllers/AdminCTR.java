@@ -26,28 +26,22 @@ import com.Spring.CouponSystem.Beans.Services.IncomeService;
 @RequestMapping("rest/admin")
 public class AdminCTR {
 
-//	@Resource
-//	private Tokens tokens;
-
 	@Autowired
 	AdminService adminService;
 
 	@Autowired
 	IncomeService incomeService;
 
-	// http://localhost:8080/coupon-system/admin/company
 	@GetMapping("/company")
 	public ResponseEntity<List<Company>> getAllCompanys() {
 		return new ResponseEntity<List<Company>>(adminService.findAllCompanies(), HttpStatus.OK);
 	}
 
-	// http://localhost:8080/coupon-system/admin/customer
 	@GetMapping("/customer")
 	public ResponseEntity<List<Customer>> getAllCustomers() {
 		return new ResponseEntity<List<Customer>>(adminService.findAllCustomers(), HttpStatus.OK);
 	}
 
-	// http://localhost:8080/coupon-system/admin/company/{id}
 	@GetMapping("/company/{id}")
 	public ResponseEntity<?> getCompany(@PathVariable("id") int id) {
 		try {
@@ -59,18 +53,17 @@ public class AdminCTR {
 
 	}
 
-	// http://localhost:8080/coupon-system/admin/customer/{id}
 	@GetMapping("/customer/{id}")
 	public ResponseEntity<?> getCustomer(@PathVariable("id") int id) {
-		if (adminService.findCustomer(id) == null) {
+		try {
+			return new ResponseEntity<Customer>(adminService.findCustomer(id), HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity<String>("This Id Not Exist!", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Customer>(adminService.findCustomer(id), HttpStatus.OK);
 	}
 
 	// http://localhost:8080/coupon-system/admin/company
 	// {"password":"shmuel","email":"zzz","comp_Name":"wava"}
-//	@PostMapping("/company/{token}")
 	@PostMapping("/company")
 	public ResponseEntity<?> newCompany(@RequestBody Company c) throws Exception {
 		if (adminService.isCompNameExists(c.getComp_Name()) == false) {
@@ -90,30 +83,30 @@ public class AdminCTR {
 			return new ResponseEntity<Customer>(adminService.createCustomer(c), HttpStatus.OK);
 	}
 
-//		http://localhost:8080/coupon-system/admin/company/{id}
 	@DeleteMapping("/company/{id}")
 	public ResponseEntity<?> removeCompany(@PathVariable("id") Company company) {
 		try {
 			adminService.deleteCompany(company);
 		} catch (Exception e) {
-			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+			System.out.println("there was an error with deleting this client");
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<String>("Company Deleted!", HttpStatus.OK);
+		System.out.println("Company Deleted!");
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
-
-//		http://localhost:8080/coupon-system/admin/customer/{id}   
+  
 	@DeleteMapping("/customer/{id}")
 	public ResponseEntity<?> removeCustomer(@PathVariable("id") int customerId) {
 		try {
 			adminService.deleteCustomer(customerId);
 		} catch (Exception e) {
-			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+			System.out.println("there was an error with deleting this client");
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
-
-		return new ResponseEntity<String>("Customer Deleted!", HttpStatus.OK);
+		System.out.println("Customer Deleted!");
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
-//	http://localhost:8080/coupon-system/admin/company/{id} 
 	@PutMapping("/company/{id}")
 	public ResponseEntity<Company> updateCompany(@PathVariable("id") int id, @RequestBody Company company) {
 		try {
@@ -124,7 +117,6 @@ public class AdminCTR {
 		return new ResponseEntity<Company>(company, HttpStatus.OK);
 	}
 
-//	http://localhost:8080/coupon-system/admin/customer/{id} 
 	@PutMapping("/customer/{id}")
 	public ResponseEntity<Customer> updateCustomer(@PathVariable("id") int id, @RequestBody Customer customer) {
 		try {
@@ -134,28 +126,21 @@ public class AdminCTR {
 		}
 		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
+	
+	@GetMapping("/allincomecompany/{companyid}")
+	public List<Income> viewIncomeByCompanyId(@PathVariable("companyid") int companyid) throws Exception {
+		List<Income> allcompanyincome = incomeService.viewIncomeByCompany(companyid);
+		return allcompanyincome;
 
-//	@GetMapping("/viewincomebycompanyname/{name}")
-//	public List<Income> viewIncomeByCompanyId(@PathVariable String name) {
-//		try {
-//			return incomeService.viewIncomeByCompanyName(name);
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//
-//		return null;
-//	}
-//
-//	@GetMapping("/viewincomebycustomername/{name}")
-//	public List<Income> viewIncomeByCustomerId(@PathVariable String name) {
-//		try {
-//			return incomeService.viewIncomeByCustomerName(name);
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//
-//		return null;
-//	}
+	}
+	
+	
+	@GetMapping("/allincomecustomer/{customerid}")
+	public List<Income> viewIncomeByCustomerId(@PathVariable("customerid") int customerid) throws Exception {
+		List<Income> allcustomerincome = incomeService.viewIncomeByCustomer(customerid);
+		return allcustomerincome;
+
+	}
 
 	@GetMapping("/viewallincome")
 	public ResponseEntity<List<Income>> viewAllIncome() throws Exception {

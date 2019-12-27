@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import com.Spring.CouponSystem.Beans.Company;
 import com.Spring.CouponSystem.Beans.Coupon;
 import com.Spring.CouponSystem.Beans.Customer;
 import com.Spring.CouponSystem.Beans.Income;
@@ -23,9 +24,6 @@ import com.Spring.CouponSystem.Beans.Repository.IncomeRepo;
 @Service
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class CustomerService {
-
-	@Autowired
-	private IncomeService incomeService;
 
 	@Autowired
 	private CustomerRepo customerRepo;
@@ -77,7 +75,7 @@ public class CustomerService {
 		return false;
 	}
 
-	public Customer purchaseCoupon(Coupon coupon, int customerId, int companyid) throws Exception {
+	public Customer purchaseCoupon(Coupon coupon, int customerId) throws Exception {
 		if (checkIfCustomerExists(customerId)) {
 			Coupon getCouponById = couponRepo.findById(coupon.getid());
 			customerRepo.findByCouponId(coupon.getid());
@@ -94,13 +92,13 @@ public class CustomerService {
 			else {
 				Coupon newCoupon = couponRepo.findById(coupon.getid());
 				Customer customer = customerRepo.findById(customerId);
-				customer.getCoupons().add(coupon);
+				customer.getCoupons().add(getCouponById);
 				customerRepo.save(customer);
 				newCoupon.setAmount(newCoupon.getAmount() - 1);
 
 				Income income = new Income();
-//				income.setClientId(customerId);
-				Coupon couponPricetmp = couponRepo.findById(coupon.getid());
+				income.setCustomerid(customerId);
+				Coupon couponPricetmp = couponRepo.findById(customerId);
 				income.setPrice(couponPricetmp.getPrice());
 				income.setDescription(IncomeType.CUSTOMER_PURCHASE);
 				LocalDate localDate = LocalDate.now();
@@ -128,9 +126,13 @@ public class CustomerService {
 		}
 	}
 
-	public Coupon getOneCoupon(int companyid, int couponid, int customerid) {
+	public Coupon getOneCoupon(int companyid, int couponid) {
 		return couponRepo.findOneCoupon(companyid, couponid);
 
+	}
+	
+	public Coupon getOneCouponFromAllCoupons(int couponid) {
+		return couponRepo.findById(couponid);
 	}
 
 	public List<Coupon> getCouponsByType(int customerid, CouponType type) {
@@ -167,5 +169,10 @@ public class CustomerService {
 		return null;
 
 	}
+	
+	public Company findById(int id) {
+		return companyRepo.findById(id);
+	}
+
 
 }
