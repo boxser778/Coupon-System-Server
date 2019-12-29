@@ -1,7 +1,13 @@
 package com.Spring.CouponSystem.Beans.Repository;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,8 +36,8 @@ public interface CouponRepo extends JpaRepository<Coupon, Integer> {
 	@Query("SELECT c from Company as company join company.coupons As c WHERE company.id=:id AND c.price=:price")
 	public List<Coupon> findCompanyCouponByPrice(int id, double price);
 
-	@Query("SELECT c from Company as company join company.coupons As c WHERE company.id=:id AND c.endDate=:endDate")
-	public List<Coupon> findCompanyCouponByEndDate(int id, Date endDate);
+	@Query("SELECT c from Company as company join company.coupons As c WHERE company.id=:companyid AND c.endDate=:endDate")
+	public List<Coupon> findCompanyCouponByendDate(int companyid, Date endDate);
 
 	@Query("SELECT c from Customer as customer join customer.coupons As c WHERE customer.id=:id")
 	public List<Coupon> findCustomerCoupon(int id);

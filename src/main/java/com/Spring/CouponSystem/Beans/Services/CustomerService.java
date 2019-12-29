@@ -1,8 +1,10 @@
 package com.Spring.CouponSystem.Beans.Services;
 
-import java.time.LocalDate;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,12 +63,17 @@ public class CustomerService {
 		return false;
 	}
 
-	public boolean checkIfCouponExpired(Coupon coupon) {
-		if (coupon.getEndDate().getTime() <= coupon.getStartDate().getTime()) {
-			return true;
-		}
-		return false;
-	}
+//	public boolean checkIfCouponExpired(Coupon coupon) {
+//		return true;
+//		DateFormat timeFormat = new SimpleDateFormat("dd-MM-yyyy");
+//		timeFormat.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+//		String curTime = timeFormat.format(new Date());
+//		if (coupon.getEndDate().getTime() <= coupon.getStartDate().getTime(curTime)) {
+////		if (coupon.getEndDate().getTime() <= coupon.getStartDate().getTime()) {
+//			return true;
+//		}
+//		return false;
+//	}
 
 	public boolean checkCouponAmount(Coupon coupon) {
 		if (coupon.getAmount() <= 0) {
@@ -85,9 +92,9 @@ public class CustomerService {
 			if (checkCouponAmount(getCouponById)) {
 				throw new Exception("out of stock");
 			}
-			if (checkIfCouponExpired(getCouponById)) {
-				throw new Exception("this coupon is Expired");
-			}
+//			if (checkIfCouponExpired(getCouponById)) {
+//				throw new Exception("this coupon is Expired");
+//			}
 
 			else {
 				Coupon newCoupon = couponRepo.findById(coupon.getid());
@@ -101,9 +108,10 @@ public class CustomerService {
 				Coupon couponPricetmp = couponRepo.findById(customerId);
 				income.setPrice(couponPricetmp.getPrice());
 				income.setDescription(IncomeType.CUSTOMER_PURCHASE);
-				LocalDate localDate = LocalDate.now();
-				Date date = java.sql.Date.valueOf(localDate);
-				income.setDate(date);
+				DateFormat timeFormat = new SimpleDateFormat("dd-MM-yyyy");
+				timeFormat.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+				String curTime = timeFormat.format(new Date());
+				income.setDate(curTime);
 				income.setName(customer.getCustomerName());
 				incomeRepo.save(income);
 
@@ -130,7 +138,7 @@ public class CustomerService {
 		return couponRepo.findOneCoupon(companyid, couponid);
 
 	}
-	
+
 	public Coupon getOneCouponFromAllCoupons(int couponid) {
 		return couponRepo.findById(couponid);
 	}
@@ -169,10 +177,9 @@ public class CustomerService {
 		return null;
 
 	}
-	
+
 	public Company findById(int id) {
 		return companyRepo.findById(id);
 	}
-
 
 }

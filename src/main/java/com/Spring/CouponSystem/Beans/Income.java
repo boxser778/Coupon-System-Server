@@ -1,7 +1,5 @@
 package com.Spring.CouponSystem.Beans;
 
-import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,8 +36,9 @@ public class Income {
 
 	@Column(nullable = false)
 	@Basic(optional = false)
-	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date date;
+//	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "dd-MM-yyyy", timezone = JsonFormat.DEFAULT_LOCALE)
+	private String date;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -65,11 +64,11 @@ public class Income {
 		this.name = name;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

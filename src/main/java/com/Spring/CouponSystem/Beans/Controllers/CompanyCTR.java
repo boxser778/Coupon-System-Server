@@ -98,24 +98,26 @@ public class CompanyCTR {
 
 	@ResponseBody
 	@GetMapping(value = "/company/{companyid}")
-	public Company getCompany(HttpServletRequest req) {
+	public ResponseEntity<Company> getCompany(HttpServletRequest req) {
 		try {
 			Company c = companyService.findById(getLoggedUser(req).getUserId());
-			return c;
+			return new ResponseEntity<Company>(c, HttpStatus.OK);
 		} catch (NullPointerException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
 	@GetMapping("/coupon")
-	public List<Coupon> getAllCompanyCoupons(HttpServletRequest req) {
+	public ResponseEntity<List<Coupon>> getAllCompanyCoupons(HttpServletRequest req) {
 		try {
-			return companyService.getAllCompanyCoupons(getLoggedUser(req).getUserId());
+			List<Coupon> companyCoupons = companyService.getAllCompanyCoupons(getLoggedUser(req).getUserId());
+			return new ResponseEntity<List<Coupon>>(companyCoupons, HttpStatus.OK);
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
 	}
 
 	@GetMapping("/couponbyprice/{companyid}/{price}")
@@ -129,14 +131,14 @@ public class CompanyCTR {
 	}
 
 	@GetMapping("/coupon/{companyid}/{couponid}")
-	public Coupon getOneCoupon(HttpServletRequest req, @PathVariable int couponid) {
+	public ResponseEntity<Coupon> getOneCoupon(HttpServletRequest req, @PathVariable int couponid) {
 		try {
-			return companyService.findOneCoupon(getLoggedUser(req).getUserId(), couponid);
-
+			Coupon c = companyService.findOneCoupon(getLoggedUser(req).getUserId(), couponid);
+			return new ResponseEntity<Coupon>(c, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/couponbytype/{companyid}/{type}")
@@ -150,11 +152,21 @@ public class CompanyCTR {
 	}
 
 	@GetMapping("/allincomecompany/{companyid}")
-	public List<Income> viewIncomeByCompanyId(HttpServletRequest req) throws Exception {
-		List<Income> allcompanyincome = incomeService.viewIncomeByCompany(getLoggedUser(req).getUserId());
-		return allcompanyincome;
+	public ResponseEntity<List<Income>> viewIncomeByCompanyId(HttpServletRequest req) throws Exception {
+		try {
+			List<Income> allcompanyincome = incomeService.viewIncomeByCompany(getLoggedUser(req).getUserId());
+			return new ResponseEntity<List<Income>>(allcompanyincome, HttpStatus.OK);
+		} catch (Exception e) {
 
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
+//	@GetMapping("/couponbyenddate/{companyid}/{enddate}")
+//	public ResponseEntity<List<Coupon>> getCouponByEndDate(@PathVariable("enddate") Date endDate,
+//			HttpServletRequest req) throws ParseException {
+//		List<Coupon> couponsbyenddate = companyService.getCouponsByEndDate(getLoggedUser(req).getUserId(), endDate);
+//		return new ResponseEntity<>(couponsbyenddate, HttpStatus.OK);
+//	}
 
 }

@@ -31,5 +31,5 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
 
 	@Query("select c from Coupon c where c.type = :type")
 	List<Coupon> findCouponsByType(CouponType type);
-
+	
 }

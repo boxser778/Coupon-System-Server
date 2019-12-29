@@ -94,7 +94,7 @@ public class AdminCTR {
 		System.out.println("Company Deleted!");
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
-  
+
 	@DeleteMapping("/customer/{id}")
 	public ResponseEntity<?> removeCustomer(@PathVariable("id") int customerId) {
 		try {
@@ -126,20 +126,29 @@ public class AdminCTR {
 		}
 		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/allincomecompany/{companyid}")
-	public List<Income> viewIncomeByCompanyId(@PathVariable("companyid") int companyid) throws Exception {
-		List<Income> allcompanyincome = incomeService.viewIncomeByCompany(companyid);
-		return allcompanyincome;
-
+	public ResponseEntity<List<Income>> viewIncomeByCompanyId(@PathVariable("companyid") int companyid)
+			throws Exception {
+		try {
+			List<Income> allcompanyincome = incomeService.viewIncomeByCompany(companyid);
+			return new ResponseEntity<List<Income>>(allcompanyincome, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
-	
-	@GetMapping("/allincomecustomer/{customerid}")
-	public List<Income> viewIncomeByCustomerId(@PathVariable("customerid") int customerid) throws Exception {
-		List<Income> allcustomerincome = incomeService.viewIncomeByCustomer(customerid);
-		return allcustomerincome;
 
+	@GetMapping("/allincomecustomer/{customerid}")
+	public ResponseEntity<List<Income>> viewIncomeByCustomerId(@PathVariable("customerid") int customerid)
+			throws Exception {
+		try {
+			List<Income> allcustomerincome = incomeService.viewIncomeByCustomer(customerid);
+			return new ResponseEntity<List<Income>>(allcustomerincome, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/viewallincome")

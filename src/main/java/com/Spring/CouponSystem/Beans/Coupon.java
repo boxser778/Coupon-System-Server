@@ -21,7 +21,7 @@ import javax.persistence.Table;
 import com.Spring.CouponSystem.Beans.Enum.CouponType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;;
 
 @Entity
 @Table(name = "coupon")
@@ -42,8 +42,8 @@ public class Coupon {
 
 	@Column(nullable = false)
 	@Basic(optional = false)
-	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date startDate;
+	@JsonFormat(pattern = "dd-MM-yyyy", timezone = JsonFormat.DEFAULT_LOCALE)
+	private String startDate;
 
 	@Column(nullable = false)
 	@Basic(optional = false)
@@ -79,7 +79,7 @@ public class Coupon {
 
 	}
 
-	public Coupon(int id, String title, int amount, Date startDate, Date endDate, CouponType type, String msg,
+	public Coupon(int id, String title, int amount, String startDate, Date endDate, CouponType type, String msg,
 			double price, String picture) {
 
 		this.id = id;
@@ -118,12 +118,12 @@ public class Coupon {
 		this.amount = amount;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setStartDate(String couponDate) {
+		this.startDate = couponDate;
 	}
 
 	public Date getEndDate() {

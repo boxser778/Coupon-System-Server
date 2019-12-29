@@ -100,11 +100,11 @@ public class AdminService {
 	public List<Customer> findAllCustomers() {
 		return customerRepo.findAll();
 	}
-	
+
 	@SuppressWarnings("static-access")
 	public LoginUser login(String admin, String password, ClientType type) {
-		if (admin.equals("admin") && password.equals("1234")&& type.equals(type.ADMIN)) {
-			return new LoginUser(admin, password,type.ADMIN);
+		if (admin.equals("admin") && password.equals("1234") && type.equals(type.ADMIN)) {
+			return new LoginUser(admin, password, type.ADMIN);
 		}
 		return null;
 	}

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Spring.CouponSystem.Beans.Income;
-import com.Spring.CouponSystem.Beans.LoginUser;
 import com.Spring.CouponSystem.Beans.Repository.IncomeRepo;
 
 @Service
@@ -25,33 +24,25 @@ public class IncomeService {
 		return incomeRepo.findAll();
 	}
 
-	@SuppressWarnings("static-access")
 	public List<Income> viewIncomeByCompany(int companyid) throws Exception {
-		LoginUser loginUser = new LoginUser();
-		if (loginUser.getClientType().COMPANY != null) {
+		try {
 			List<Income> allIncomesByCompany = incomeRepo.findByCompanyid(companyid);
 			return allIncomesByCompany;
-		} else {
-
-			throw new Exception();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
+		return null;
 
 	}
-	
-	@SuppressWarnings("static-access")
+
 	public List<Income> viewIncomeByCustomer(int customerid) throws Exception {
-		LoginUser loginUser = new LoginUser();
-		if (loginUser.getClientType().CUSTOMER != null) {
+		try {
 			List<Income> allIncomesByCustomer = incomeRepo.findBycustomerid(customerid);
 			return allIncomesByCustomer;
-		} else {
-
-			throw new Exception();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-
+		return null;
 	}
 
-
-
-	
 }

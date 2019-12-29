@@ -34,19 +34,18 @@ public class CustomerCTR {
 	private IncomeService incomeService;
 
 	public LoginUser getLoggedUser(HttpServletRequest req) {
-		System.out.println("inside customer controller" + req.getSession().getAttribute("user"));
 		return (LoginUser) req.getSession(false).getAttribute("user");
-
 	}
 
 	@GetMapping("/coupon")
-	public List<Coupon> getAllCustomerCoupons(HttpServletRequest req) {
+	public ResponseEntity<List<Coupon>> getAllCustomerCoupons(HttpServletRequest req) {
 		try {
-			return customerService.getAllCustomerCoupons(getLoggedUser(req).getUserId());
+			List<Coupon> allCustomerCoupons = customerService.getAllCustomerCoupons(getLoggedUser(req).getUserId());
+			return new ResponseEntity<List<Coupon>>(allCustomerCoupons, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/couponbytype/{customerid}/{type}")
@@ -61,11 +60,15 @@ public class CustomerCTR {
 
 	@GetMapping("/couponbyprice/{customerid}/{price}")
 	public ResponseEntity<?> getCouponsByPrice(@PathVariable("price") double price, HttpServletRequest req) {
-		if (customerService.getCouponsByPrice(getLoggedUser(req).getUserId(), price) == null) {
-			return new ResponseEntity<String>("Failed!", HttpStatus.BAD_REQUEST);
+		try {
+			List<Coupon> customerCouponsByPrice = customerService.getCouponsByPrice(getLoggedUser(req).getUserId(),
+					price);
+			return new ResponseEntity<List<Coupon>>(customerCouponsByPrice, HttpStatus.OK);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
-		return new ResponseEntity<List<Coupon>>(
-				customerService.getCouponsByPrice(getLoggedUser(req).getUserId(), price), HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 	}
 
@@ -76,25 +79,32 @@ public class CustomerCTR {
 			return new ResponseEntity<String>(HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+
 	}
 
 	@GetMapping("/coupon/{couponid}")
-	public Coupon getOneCoupon(@PathVariable("couponid") int couponid) {
+	public ResponseEntity<Coupon> getOneCoupon(@PathVariable("couponid") int couponid) {
 		try {
-			return customerService.getOneCouponFromAllCoupons(couponid);
-
+			Coupon c = customerService.getOneCouponFromAllCoupons(couponid);
+			return new ResponseEntity<Coupon>(c, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping("/allincomecustomer/{customerid}")
-	public List<Income> viewIncomeByCustomerId(HttpServletRequest req) throws Exception {
-		List<Income> allcustomerincome = incomeService.viewIncomeByCustomer(getLoggedUser(req).getUserId());
-		return allcustomerincome;
+	public ResponseEntity<List<Income>> viewIncomeByCustomerId(HttpServletRequest req) throws Exception {
+		try {
+			List<Income> allcustomerincome = incomeService.viewIncomeByCustomer(getLoggedUser(req).getUserId());
+			return new ResponseEntity<List<Income>>(allcustomerincome, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 	}
 

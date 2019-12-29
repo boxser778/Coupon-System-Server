@@ -1,8 +1,10 @@
 package com.Spring.CouponSystem.Beans.Services;
 
-import java.time.LocalDate;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,6 @@ import com.Spring.CouponSystem.Beans.Repository.CompanyRepo;
 import com.Spring.CouponSystem.Beans.Repository.CouponRepo;
 import com.Spring.CouponSystem.Beans.Repository.IncomeRepo;
 
-
 @Service
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 public class CompanyService {
@@ -34,7 +35,7 @@ public class CompanyService {
 	IncomeRepo incomeRepo;
 
 	private Company company;
-	
+
 	public Company findByNameAndPassword(String compName, String password) {
 		return companyRepo.findByCompanyNameAndPassword(compName, password);
 	}
@@ -61,18 +62,20 @@ public class CompanyService {
 		if (checkIfTitleAlreadyExists(coupon.getTitle()) == false) {
 			coupon.setCompany(companyRepo.findById(companyId));
 			if (checkIfCompanyExists(companyId)) {
-				LocalDate couponCreatingDate = LocalDate.now();
-				Date couponDate = java.sql.Date.valueOf(couponCreatingDate);
-				coupon.setStartDate(couponDate);
+				DateFormat timeFormat = new SimpleDateFormat("dd-MM-yyyy");
+				timeFormat.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+				String curTime = timeFormat.format(new Date());
+				coupon.setStartDate(curTime);
 				couponRepo.save(coupon);
 
 				Income income = new Income();
 				income.setCompanyid(companyId);
 				income.setPrice(100.0);
 				income.setDescription(IncomeType.COMPANY_NEW_COUPON);
-				LocalDate localDate = LocalDate.now();
-				Date date = java.sql.Date.valueOf(localDate);
-				income.setDate(date);
+				DateFormat timeFormat2 = new SimpleDateFormat("dd-MM-yyyy");
+				timeFormat2.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+				String curTime2 = timeFormat.format(new Date());
+				income.setDate(curTime2);
 				income.setName(coupon.getCompany().getComp_Name());
 				incomeRepo.save(income);
 			} else {
@@ -84,25 +87,27 @@ public class CompanyService {
 		}
 		return coupon;
 	}
-	
-	public Coupon updateCoupon(int companyid,Coupon coupon) {
 
-	    coupon.setCompany(companyRepo.findById(companyid));
+	public Coupon updateCoupon(int companyid, Coupon coupon) {
 
-	    Coupon currentCoupon = couponRepo.findById(coupon.getid());
-	    currentCoupon.setEndDate(coupon.getEndDate());
-	    currentCoupon.setPrice(coupon.getPrice());
-	    couponRepo.saveAndFlush(currentCoupon);
-	    Income income = new Income();
-	    income.setCompanyid(companyid);
-	    income.setPrice(10.0);
-	    income.setDescription(IncomeType.COMPANY_UPDATE_COUPON);
-	    LocalDate localDate = LocalDate.now();
-	    Date date = java.sql.Date.valueOf(localDate);
-	    income.setDate(date);
-	    income.setName(coupon.getCompany().getComp_Name());
-	    incomeRepo.save(income);
-	    return currentCoupon;
+		coupon.setCompany(companyRepo.findById(companyid));
+
+		Coupon currentCoupon = couponRepo.findById(coupon.getid());
+		currentCoupon.setEndDate(coupon.getEndDate());
+		currentCoupon.setPrice(coupon.getPrice());
+		couponRepo.saveAndFlush(currentCoupon);
+
+		Income income = new Income();
+		income.setCompanyid(companyid);
+		income.setPrice(10.0);
+		income.setDescription(IncomeType.COMPANY_UPDATE_COUPON);
+		DateFormat timeFormat = new SimpleDateFormat("dd-MM-yyyy");
+		timeFormat.setTimeZone(TimeZone.getTimeZone("Asia/Jerusalem"));
+		String curTime = timeFormat.format(new Date());
+		income.setDate(curTime);
+		income.setName(coupon.getCompany().getComp_Name());
+		incomeRepo.save(income);
+		return currentCoupon;
 	}
 
 	public boolean deleteCoupon(int id) {
@@ -144,11 +149,18 @@ public class CompanyService {
 		return couponRepo.findAll();
 	}
 
-	public List<Coupon> getCouponsByEndDate(int companyid, Date endDate) {
-		return couponRepo.findCompanyCouponByEndDate(companyid, endDate);
-	}
+//	public List<Coupon> getCouponsByEndDate(int companyid, Date endDate) throws ParseException {
+//		String time = toDate(endDate);
+//		List<Coupon>coupons = couponRepo.findCompanyCouponByendDate(companyid, time);
+//		return coupons;
+//	}
+//	
+//	public List<Coupon> getCouponsByEndDate(int companyid, Date endDate) throws ParseException {
+//		List<Coupon> coupons = couponRepo.findCompanyCouponByendDate(companyid, endDate);
+//		return coupons;
+//	}
 
-	public List<Coupon> getCouponsByPrice(int companyid,double price) {
+	public List<Coupon> getCouponsByPrice(int companyid, double price) {
 		return couponRepo.findCompanyCouponByPrice(companyid, price);
 	}
 
@@ -156,23 +168,19 @@ public class CompanyService {
 		return couponRepo.findCompanyCouponByType(companyid, type);
 	}
 
-	public LoginUser login(String companyName,String password,ClientType type)  {
-		if (!companyName.isEmpty() ) {
+	public LoginUser login(String companyName, String password, ClientType type) {
+		if (!companyName.isEmpty()) {
 			Company c = companyRepo.findByCompanyNameAndPassword(companyName, password);
 			if (c != null) {
 				System.out.println("Login Succes!");
-				return new LoginUser(c.getId(),c.getComp_Name(), ClientType.COMPANY);
-			}
-			else {
+				return new LoginUser(c.getId(), c.getComp_Name(), ClientType.COMPANY);
+			} else {
 				System.err.println("Login Faild!");
 			}
 		}
-		
+
 		return null;
 
 	}
-	
-	
-	
 
 }
