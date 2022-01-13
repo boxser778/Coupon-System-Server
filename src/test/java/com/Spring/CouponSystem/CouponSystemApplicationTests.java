@@ -10,10 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CouponSystemApplicationTests {
    
 
-
-
-
-   
 	@Test
 	public void contextLoads() {
 	}
